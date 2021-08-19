@@ -1,0 +1,35 @@
+require('dotenv').config();
+const express = require('express');
+const app = express();
+const cors = require('cors');
+
+// CORS CONFIG
+const allowedOrigins = process.env.CORS_WHITELIST.split(' ');
+const corsOptions = {
+	function (origin, callback) {
+		console.log(origin)
+		if (allowedOrigins.indexOf(origin) !== -1) {
+		  callback(null, true)
+		} else {
+		  callback(new Error('Not allowed by CORS'))
+		}
+	}
+}
+app.use(cors(corsOptions));
+
+// EXPRESS CONFIG
+app.use(express.json())
+app.use(express.urlencoded({extended: false}))
+
+// ROUTER
+const router = require('./src/routes/indexRoutes');
+app.use('/growcery', router);
+
+// DATABASE
+const db = require("./src/models");
+
+// PORT CONFIG
+const port = 8080 || process.env.PORT;
+app.listen(port, () => {
+    console.log(`App running on port ${port}`)
+})
