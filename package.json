@@ -17,6 +17,7 @@
     "fs": "0.0.1-security",
     "json": "^11.0.0",
     "jsonwebtoken": "^8.5.1",
-    "sequelize": "^6.6.4"
+    "sequelize": "^6.6.4",
+    "googleapis": "84.0.0"
   }
 }
