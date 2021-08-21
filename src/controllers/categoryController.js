@@ -94,7 +94,7 @@ const deleteCategories = (req, res) => {
         } else {
           res.send({
             status: "Failed",
-            message: `Cannot delete Product with id=${id}`
+            message: `Cannot delete category with id=${id}`
           });
         }
       })
