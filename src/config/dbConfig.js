@@ -7,6 +7,5 @@ module.exports = {
     DB: process.env.DB_DATABASE,
     dialect: process.env.DB_DIALECT,
     dialectOptions: process.env.DB_DIALECT_OPTIONS,
-    ssl: process.env.SSL
     // timezone: "+07:00"
   };

@@ -4,7 +4,9 @@ const Sequelize = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
     dialect: dbConfig.dialect,
-    dialectOptions: dbConfig.dialectOptions
+    dialectOptions: {ssl:{
+      require: true,
+      rejectUnauthorized: false}}
   })
 
 const db = {}
