@@ -1,7 +1,7 @@
 const db = require("../models");
 const Product = db.product;
 
-const createProduct = (req, res) => {
+const createProduct = (req, res, next) => {
     if (!req.body.category_id || !req.body.product_name || !req.body.product_desc || !req.body.product_price) {
         res.status(400).send({
             status: "Failed",
@@ -20,10 +20,8 @@ const createProduct = (req, res) => {
 
     Product.create(product)
         .then(data => {
-            res.send({
-                status: "Success",
-                message: "Product is created successfully"
-            });
+            req.data = data
+            next()
         })
         .catch(err => {
             res.status(500).send({
