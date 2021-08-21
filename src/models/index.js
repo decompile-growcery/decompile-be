@@ -1,10 +1,13 @@
 const dbConfig = require("../config/dbConfig");
 const Sequelize = require("sequelize");
+const pg = require('pg');
+pg.defaults.ssl = true;
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
-    dialect: dbConfig.dialect
-    // dialectOptions: dbConfig.dialectOptions
+    dialect: dbConfig.dialect,
+    ssl: dbConfig.ssl, 
+    dialectOptions: dbConfig.dialectOptions
   })
 
 const db = {}
