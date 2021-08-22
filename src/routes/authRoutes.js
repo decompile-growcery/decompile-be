@@ -1,7 +1,7 @@
 const auth = require('../controllers/authController');
 var router = require("express").Router();
 
-router.get("/auth/get-google-url", auth.getGoogleAuthURL)
-router.post("/auth/validate-google-url", auth.validateGoogleAuthToken)
+router.get("/auth/get-google-auth-url", auth.getGoogleAuthURL)
+router.get("/auth/auth-google-account", auth.getGoogleAccount)
 
 module.exports = router;
