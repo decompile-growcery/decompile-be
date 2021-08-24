@@ -1,6 +1,7 @@
 const db = require("../models");
 var crypto = require('crypto'); 
 const User = db.user;
+const jwt = require('jsonwebtoken')
 
 const createUser = (req, res) => {
 	// Check if data is complete
@@ -66,9 +67,14 @@ const authUser = (req, res) => {
 		var password_hash = crypto.pbkdf2Sync(req.body.password,  password_salt_db, 1000, 64, `sha512`).toString(`hex`); 
 		
 		if (password_hash === password_hash_db){
+            const accessToken = 
+                jwt.sign({id: data.id, username: data.username}, process.env.JWT_SECRET, {
+                        expiresIn: '1d'
+                   })
 			res.status(200).send({
 				status: "Success",
-				message: "User has been authenticated"
+				message: "User has been authenticated",
+                token: accessToken
 			});
 		}else{
 			res.status(403).send({
