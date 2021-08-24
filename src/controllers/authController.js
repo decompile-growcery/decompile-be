@@ -1,6 +1,6 @@
 const db = require("../models");
 var crypto = require('crypto'); 
-const User = db.user;
+const User = db.users;
 const jwt = require('jsonwebtoken')
 
 const createUser = (req, res) => {

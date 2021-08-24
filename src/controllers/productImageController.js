@@ -10,9 +10,10 @@ const createProductImage = (req, res) => {
         return;
     }
 
+    var id = req.body.id == null? req.data.id : req.body.id;
     for(let i=0; i<req.files.length; i++) {
         ProductImage.create({
-            product_id: req.data.id,
+            product_id: id,
             image: req.files[i].path
         })
         .then(data => {
