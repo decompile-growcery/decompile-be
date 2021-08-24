@@ -11,17 +11,18 @@ const createUser = (req, res) => {
         });
         return;
     }
+	// TODO: Validate Username
 
 	salt = crypto.randomBytes(16).toString('hex');
 	password_hash =  crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex');
 	password_hash_salt = password_hash + "|" + salt;
 
     const user = {
-        username: req.body.username,
-        password: password_hash_salt,
-        email: req.body.email,
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
+        username: req.body.username.trim(),
+        password: password_hash_salt.trim(),
+        email: req.body.email.trim(),
+        first_name: req.body.first_name.trim(),
+        last_name: req.body.last_name.trim(),
     }
 
     User.create(user)
@@ -33,8 +34,8 @@ const createUser = (req, res) => {
         })
         .catch(err => {
             res.status(500).send({
-                message:
-                err.message || "Error occurred while creating a user"
+				status: "Failed",
+                message: err.message || "Error occurred while creating a user"
             });
     });
 }
@@ -58,15 +59,15 @@ const authUser = (req, res) => {
 		var password_hash = crypto.pbkdf2Sync(req.body.password,  password_salt_db, 1000, 64, `sha512`).toString(`hex`); 
 		
 		if (password_hash === password_hash_db){
-			res.send({
+			res.status(200).send({
 				status: "Success",
 				message: "User has been authenticated"
-			}).sendStatus(200);
+			});
 		}else{
-			res.send({
+			res.status(403).send({
 				status: "Failed",
 				message: "Invalid credentials"
-			}).sendStatus(403);
+			});
 		}
     })
     .catch(err => {
