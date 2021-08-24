@@ -41,7 +41,8 @@ const createUser = (req, res) => {
 }
 
 const authUser = (req, res) => {
-	if (!req.body.username || !req.body.password) {
+	var login_key = req.body.login;
+	if (!req.body.login || !req.body.password) {
         res.status(400).send({
             status: "Failed",
             message: "Content can not be empty!"
@@ -49,8 +50,14 @@ const authUser = (req, res) => {
         return;
     }
 	
-    User.findOne({ where: { username: req.body.username } })
-    .then(data => {
+	// Choose between email and username
+	if (login_key.indexOf("@") >= 0){
+		var user_data = User.findOne({ where: { email: login_key } });    
+	}else{
+		var user_data = User.findOne({ where: { username: login_key } });    
+	}
+	
+	user_data.then(data => {
 		// Validate Hash
 		var password_split = data.password.split("|");
 		var password_hash_db = password_split[0];
@@ -72,8 +79,7 @@ const authUser = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({
-        message:
-          err.message || "Invalid credentials"
+        message: "Invalid credentials."
       });
     });
 }
