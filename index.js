@@ -3,6 +3,14 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
+// BASE URL CONFIG
+const ENVIRONMENT = process.env.ENV || "development";
+if (ENVIRONMENT == "development"){
+	const base_url = "http://localhost:8080";
+}else{
+	const base_url = "https://growcery-be.herokuapp.com";
+}
+
 // CORS CONFIG
 const allowedOrigins = process.env.CORS_WHITELIST.split(' ');
 const corsOptions = {
@@ -28,7 +36,7 @@ app.use('/growcery', router);
 // DATABASE
 const db = require("./src/models");
 // add this to sync / create new table in db
-// db.sequelize.sync();
+db.sequelize.sync();
 
 // PORT CONFIG
 const port = process.env.PORT || 5000;

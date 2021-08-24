@@ -4,9 +4,9 @@ const Sequelize = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
     dialect: dbConfig.dialect,
-    dialectOptions: {ssl:{
+    dialectOptions: {/* ssl:{
       require: true,
-      rejectUnauthorized: false}}
+      rejectUnauthorized: false} */}
   })
 
 const db = {}
@@ -14,6 +14,7 @@ const db = {}
 db.Sequelize = Sequelize
 db.sequelize = sequelize
 
+db.user = require("./userModel.js")(sequelize, Sequelize);
 db.category = require("./categoryModel.js")(sequelize, Sequelize);
 db.product = require("./productModel.js")(sequelize, Sequelize);
 db.product_image = require("./productImageModel.js")(sequelize, Sequelize);
