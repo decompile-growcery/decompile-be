@@ -1,16 +1,14 @@
-name: Deploy
+name: Heroku Action
 
 on:
   push:
     branches:
       - master
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+      
+# You may pin to the exact commit or the version.
+# uses: CDNievas/heroku-action@c9cf9c85571e67583e44ec92c0d1113f66b0e838
+uses: CDNievas/heroku-action@v1.0
+with:
+  # Used for authentication. You can find it in your heroku homepage account settings
+  heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+  heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
