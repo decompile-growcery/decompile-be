@@ -7,7 +7,7 @@ router.get("/auth/google/get-auth-url", googleAuth.getGoogleAuthURL)
 router.get("/auth/google/auth-code", googleAuth.getGoogleAccount)
 
 // Manual Auth
-// TODO: Change this
-router.get("/auth/manual", googleAuth.getGoogleAuthURL)
+router.post("/auth/create-user", auth.createUser)
+router.post("/auth/login", auth.authUser)
 
 module.exports = router;
