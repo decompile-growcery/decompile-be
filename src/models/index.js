@@ -1,16 +1,13 @@
 const dbConfig = require("../config/dbConfig");
 const Sequelize = require("sequelize");
 
+console.trace(dbConfig.dialectOptions);
+
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-    host: dbConfig.HOST,
-    dialect: dbConfig.dialect,
-    dialectOptions: {
-     ssl:{
-      require: true,
-      rejectUnauthorized: false
-    }
-    }
-  })
+	host: dbConfig.HOST,
+	dialect: dbConfig.dialect,
+	dialectOptions: JSON.parse(dbConfig.dialectOptions)
+})
 
 const db = {}
 
