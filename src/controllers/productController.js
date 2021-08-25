@@ -3,7 +3,8 @@ const Product = db.product;
 const ProductImage = db.product_image;
 
 const createProduct = (req, res, next) => {
-    if (!req.body.category_id || !req.body.product_name || !req.body.product_desc || !req.body.product_price) {
+    if (!req.body.category_id || !req.body.product_name || !req.body.product_desc || !req.body.product_price
+      || !req.body.unit_weight || !req.body.unit_name) {
         res.status(400).send({
             status: "Failed",
             message: "Content can not be empty!"
@@ -12,11 +13,13 @@ const createProduct = (req, res, next) => {
     }
 
     const product = {
-        farm_id: 1, // get from jwt token? ato gimana ya ntar we'll think about this ya
+        farm_id: req.farm_id,
         category_id: req.body.category_id,
         product_name: req.body.product_name,
         product_desc: req.body.product_desc,
-        product_price: req.body.product_price
+        product_price: req.body.product_price,
+        unit_weight: req.body.unit_weight,
+        unit_name: req.body.unit_name
     }
 
     Product.create(product)
@@ -90,10 +93,10 @@ const seeProducts = (req, res) => {
     }
 }
 
-
 const updateProduct = (req, res) => {
     if (!req.body.id || !req.body.category_id || !req.body.product_name 
-        || !req.body.product_desc || !req.body.product_price) {
+        || !req.body.product_desc || !req.body.product_price || !req.body.unit_weight
+        || !req.body.unit_name) {
         res.status(400).send({
             status: "Failed",
             message: "Content can not be empty!"
@@ -105,7 +108,9 @@ const updateProduct = (req, res) => {
         category_id: req.body.category_id,
         product_name: req.body.product_name,
         product_desc: req.body.product_desc,
-        product_price: req.body.product_price
+        product_price: req.body.product_price,
+        unit_weight: req.body.unit_weight,
+        unit_name: req.body.unit_name
     }
 
     Product.update(product, {
