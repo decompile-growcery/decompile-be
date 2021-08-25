@@ -1,6 +1,6 @@
 const db = require("../models");
 var crypto = require('crypto'); 
-const User = db.user;
+const User = db.users;
 const jwt = require('jsonwebtoken')
 
 const createUser = (req, res) => {
@@ -51,7 +51,6 @@ const authUser = (req, res) => {
         return;
     }
 	
-	// Choose between email and username
 	if (login_key.indexOf("@") >= 0){
 		var user_data = User.findOne({ where: { email: login_key } });    
 	}else{
@@ -59,13 +58,12 @@ const authUser = (req, res) => {
 	}
 	
 	user_data.then(data => {
-		// Validate Hash
 		var password_split = data.password.split("|");
 		var password_hash_db = password_split[0];
 		var password_salt_db = password_split[1];
 
 		var password_hash = crypto.pbkdf2Sync(req.body.password,  password_salt_db, 1000, 64, `sha512`).toString(`hex`); 
-		
+        
 		if (password_hash === password_hash_db){
             const accessToken = 
                 jwt.sign({id: data.id, username: data.username}, process.env.JWT_SECRET, {
@@ -85,7 +83,7 @@ const authUser = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: "Invalid credentials."
+        message: err.message || "Invalid credentials."
       });
     });
 }

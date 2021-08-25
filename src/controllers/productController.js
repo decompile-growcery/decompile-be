@@ -1,5 +1,6 @@
 const db = require("../models");
 const Product = db.product;
+const ProductImage = db.product_image;
 
 const createProduct = (req, res, next) => {
     if (!req.body.category_id || !req.body.product_name || !req.body.product_desc || !req.body.product_price) {
@@ -31,44 +32,62 @@ const createProduct = (req, res, next) => {
     });
 }
 
-const seeProducts = (req, res) => {
-    Product.findAll()
-    .then(data => {
-        res.send({
-            status: "Success",
-            data: data
-        });
+const getProduct = (req, res) => {
+  Product.findByPk(req.params.id)
+  .then(data => {
+    ProductImage.findAll({where: {product_id: data.id}})
+    .then(imgData => {
+      res.send({
+        status: "Success",
+        product: data,
+        image: imgData
+      })
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Error occurred while retrieving products"
+          err.message || "Error occurred while retrieving product images"
       });
     });
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Error occurred while retrieving product"
+    });
+  });
 }
 
-const seeProductsBasedCategory = (req, res) => {
+const seeProducts = (req, res) => {
     if (!req.query.category_id) {
-        res.status(400).send({
-            status: "Failed",
-            message: "Content can not be empty!"
+      Product.findAll()
+      .then(data => {
+          res.send({
+              status: "Success",
+              data: data
+          });
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Error occurred while retrieving products"
         });
-        return;
-    }
-
-    Product.findAll({where: {category_id: req.query.category_id}})
-    .then(data => {
-        res.send({
-            status: "Success",
-            data: data
-        });
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Error occurred while retrieving products"
       });
-    });
+    } else {
+      Product.findAll({where: {category_id: req.query.category_id}})
+      .then(data => {
+          res.send({
+              status: "Success",
+              data: data
+          });
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Error occurred while retrieving products"
+        });
+      });
+    }
 }
 
 
@@ -142,7 +161,7 @@ const deleteProduct = (req, res) => {
 module.exports = {
     createProduct,
     seeProducts,
-    seeProductsBasedCategory,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    getProduct
 }
