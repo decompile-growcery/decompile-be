@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const passport = require('passport');
+require('./src/config/passport')(passport)
 
 // BASE URL CONFIG
 const ENVIRONMENT = process.env.ENV || "development";
@@ -29,6 +31,10 @@ app.use(cors(corsOptions));
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
+// PASSPORT
+app.use(passport.initialize())
+app.use(passport.session())
+
 // ROUTER
 const router = require('./src/routes/indexRoutes');
 app.use('/growcery', router);
@@ -36,7 +42,7 @@ app.use('/growcery', router);
 // DATABASE
 const db = require("./src/models");
 // add this to sync / create new table in db
-db.sequelize.sync();
+// db.sequelize.sync();
 
 // PORT CONFIG
 const port = process.env.PORT || 5000;
