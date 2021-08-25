@@ -8,25 +8,29 @@ module.exports = (sequelize, Sequelize) => {
       },
       username: {
         type: Sequelize.STRING,
-		unique: true,
+		    unique: true,
         allowNull: false
       },
       email: {
         type: Sequelize.STRING,
-		unique: true,
+		    unique: true,
         allowNull: false
       },
       first_name: {
         type: Sequelize.STRING,
+		    unique: false,
         allowNull: false
       },
       last_name: {
         type: Sequelize.STRING,
+		    unique: false,
         allowNull: false
       },
       password: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: Sequelize.STRING
+      },
+      googleId: {
+        type: Sequelize.STRING
       }
     },
       {

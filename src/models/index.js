@@ -16,6 +16,7 @@ db.sequelize = sequelize
 db.cartitem = require("./cartItemModel.js")(sequelize, Sequelize);
 db.users = require("./userModel.js")(sequelize, Sequelize);
 db.category = require("./categoryModel.js")(sequelize, Sequelize);
+db.farm = require("./farmModel.js")(sequelize, Sequelize);
 db.product = require("./productModel.js")(sequelize, Sequelize);
 db.product_image = require("./productImageModel.js")(sequelize, Sequelize);
 
@@ -23,6 +24,7 @@ db.product_image = require("./productImageModel.js")(sequelize, Sequelize);
 // FIXME: Check product foreign key validation for cartitem
 db.product.hasMany(db.product_image, {foreignKey: 'product_id'})
 db.category.hasMany(db.product, {foreignKey: 'category_id'})
+db.users.hasOne(db.farm, {foreignKey: 'user_id'})
 db.users.hasMany(db.cartitem, {foreignKey: 'user_id'})
 db.product.hasMany(db.cartitem, {foreignKey: 'product_id'})
 

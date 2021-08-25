@@ -25,6 +25,14 @@ module.exports = (sequelize, Sequelize) => {
       product_price: {
         type: Sequelize.FLOAT,
         allowNull: false
+      },
+      unit_weight: {
+        type: Sequelize.FLOAT,
+        allowNull: false
+      },
+      unit_name: {
+        type: Sequelize.STRING,
+        allowNull: false
       }
     },
       {

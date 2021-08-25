@@ -1,6 +1,7 @@
 const googleAuthLib = require('../libraries/googleAuthLib');
 var gAuth = new googleAuthLib();
 
+
 const getGoogleAuthURL = (req, res) => {
 	// Retrieve Auth URL
 	auth_url = gAuth.getURL();
