@@ -15,13 +15,13 @@ const verifyToken = async (req, res, next) => {
             next();
         } catch (TokenExpiredError) {
             res.status(401).send({
-                status: "Fail",
+                status: "Failed",
                 message: "Token expired"
             });
         }
     } else {
         res.status(401).send({
-            status: "Fail",
+            status: "Failed",
             message: "You don't have permission"
         });
     }
