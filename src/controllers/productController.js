@@ -58,27 +58,6 @@ const getProduct = async (req, res) => {
   }  
 }
 
-const getProductByFarm = async (req, res) => {
-  query = `SELECT P.ID AS PRODUCT_ID, F.ID AS FARM_ID, F.FARM_NAME, F.FARM_ADDRESS,
-      P.PRODUCT_NAME, P.PRODUCT_DESC, P.PRODUCT_PRICE, P.UNIT_WEIGHT, P.UNIT_NAME,
-      PI.ID AS IMAGE_ID, PI.IMAGE
-      FROM PRODUCT P, FARM F, PRODUCT_IMAGE PI
-      WHERE P.FARM_ID = F.ID AND PI.PRODUCT_ID = P.ID 
-      AND F.ID = ${req.params.farm_id}`
-  try {
-        var [result, metadata] = await sequelize.query(query)
-          res.send({
-            status: "Success",
-            data: result
-          })
-  } catch (error) {
-    res.status(500).send({
-      message:
-        error.message || "Error occurred while fetching product"
-    });
-  } 
-}
-
 const seeProducts = async (req, res) => {
     let query;
     if (req.query.category_id) {
