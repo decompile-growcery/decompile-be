@@ -36,7 +36,7 @@ const createUser = (req, res) => {
         .catch(err => {
             res.status(500).send({
 				status: "Failed",
-                message: err.message || "Error occurred while creating a user"
+                message: "Error occurred while creating a user"
             });
     });
 }
@@ -83,7 +83,7 @@ const authUser = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: err.message || "Invalid credentials."
+        message: "Invalid credentials."
       });
     });
 }
