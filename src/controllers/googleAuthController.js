@@ -12,7 +12,7 @@ const getGoogleAuthURL = (req, res) => {
 	});
 }
 
-const getGoogleAccount = async (req, res) => {
+const authGoogle = async (req, res) => {
 	try {
 		res.send(gAuth.getGoogleAccount(req.query.code));
 		console.log(123);
@@ -22,10 +22,9 @@ const getGoogleAccount = async (req, res) => {
 			"message": "Failed to retrieve data from Google Auth Token"
 		});
 	}
-	
 }
 
 module.exports = {
-    getGoogleAccount,
+    authGoogle,
 	getGoogleAuthURL
 }
