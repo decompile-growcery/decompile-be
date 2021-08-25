@@ -4,7 +4,7 @@ var router = require("express").Router();
 
 // Google Auth
 router.get("/auth/google/get-auth-url", googleAuth.getGoogleAuthURL)
-router.get("/auth/google/auth-code", googleAuth.getGoogleAccount)
+router.get("/auth/google/auth-code", googleAuth.authGoogle)
 
 // Manual Auth
 router.post("/auth/register", auth.createUser)
