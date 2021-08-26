@@ -11,7 +11,7 @@ const getFarmId = (req, res, next) => {
     })
     .catch(err => {
       res.status(500).send({
-        status: "Fail",
+        status: "Failed",
         message:
           err.message || "Farm does not exist"
       });
