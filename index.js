@@ -47,5 +47,8 @@ db.sequelize.sync();
 // PORT CONFIG
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
+	app.get('/',function(req, res){
+		res.send("Growcery Backend is up and running...");
+	})
     console.log(`App running on port ${port}`)
 })
