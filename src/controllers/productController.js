@@ -1,9 +1,12 @@
 const db = require("../models");
+const sequelize = db.sequelize;
+const { QueryTypes } = require('sequelize');
 const Product = db.product;
 const ProductImage = db.product_image;
 
 const createProduct = (req, res, next) => {
-    if (!req.body.category_id || !req.body.product_name || !req.body.product_desc || !req.body.product_price) {
+    if (!req.body.category_id || !req.body.product_name || !req.body.product_desc || !req.body.product_price
+      || !req.body.unit_weight || !req.body.unit_name) {
         res.status(400).send({
             status: "Failed",
             message: "Content can not be empty!"
@@ -12,11 +15,13 @@ const createProduct = (req, res, next) => {
     }
 
     const product = {
-        farm_id: 1, // get from jwt token? ato gimana ya ntar we'll think about this ya
+        farm_id: req.farm_id,
         category_id: req.body.category_id,
         product_name: req.body.product_name,
         product_desc: req.body.product_desc,
-        product_price: req.body.product_price
+        product_price: req.body.product_price,
+        unit_weight: req.body.unit_weight,
+        unit_name: req.body.unit_name
     }
 
     Product.create(product)
@@ -32,68 +37,68 @@ const createProduct = (req, res, next) => {
     });
 }
 
-const getProduct = (req, res) => {
-  Product.findByPk(req.params.id)
-  .then(data => {
-    ProductImage.findAll({where: {product_id: data.id}})
-    .then(imgData => {
+const getProduct = async (req, res) => {
+  query = `SELECT P.ID AS PRODUCT_ID, F.ID AS FARM_ID, F.FARM_NAME, F.FARM_ADDRESS,
+      P.PRODUCT_NAME, P.PRODUCT_DESC, P.PRODUCT_PRICE, P.UNIT_WEIGHT, P.UNIT_NAME,
+      PI.ID AS IMAGE_ID, PI.IMAGE
+      FROM PRODUCT P, FARM F, PRODUCT_IMAGE PI
+      WHERE P.FARM_ID = F.ID AND PI.PRODUCT_ID = P.ID 
+      AND P.ID = ${req.params.id}`
+  try {
+    var [result, metadata] = await sequelize.query(query)
       res.send({
         status: "Success",
-        product: data,
-        image: imgData
+        data: result
       })
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Error occurred while retrieving product images"
-      });
-    });
-  })
-  .catch(err => {
+  } catch (error) {
     res.status(500).send({
       message:
-        err.message || "Error occurred while retrieving product"
+        error.message || "Error occurred while fetching product"
     });
-  });
+  }  
 }
 
-const seeProducts = (req, res) => {
-    if (!req.query.category_id) {
-      Product.findAll()
-      .then(data => {
-          res.send({
-              status: "Success",
-              data: data
-          });
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Error occurred while retrieving products"
-        });
-      });
+const seeProducts = async (req, res) => {
+    let query;
+    if (req.query.category_id) {
+      query = `SELECT P.ID AS PRODUCT_ID, F.ID AS FARM_ID, F.FARM_NAME, F.FARM_ADDRESS,
+      P.PRODUCT_NAME, P.PRODUCT_DESC, P.PRODUCT_PRICE, P.UNIT_WEIGHT, P.UNIT_NAME,
+      PI.ID AS IMAGE_ID, PI.IMAGE
+      FROM PRODUCT P, FARM F, PRODUCT_IMAGE PI
+      WHERE P.FARM_ID = F.ID AND PI.PRODUCT_ID = P.ID
+      AND P.CATEGORY_ID = ${req.query.category_id}`
+    } else if (req.query.farm_id) {
+      query = `SELECT P.ID AS PRODUCT_ID, F.ID AS FARM_ID, F.FARM_NAME, F.FARM_ADDRESS,
+      P.PRODUCT_NAME, P.PRODUCT_DESC, P.PRODUCT_PRICE, P.UNIT_WEIGHT, P.UNIT_NAME,
+      PI.ID AS IMAGE_ID, PI.IMAGE
+      FROM PRODUCT P, FARM F, PRODUCT_IMAGE PI
+      WHERE P.FARM_ID = F.ID AND PI.PRODUCT_ID = P.ID 
+      AND F.ID = ${req.query.farm_id}`
     } else {
-      Product.findAll({where: {category_id: req.query.category_id}})
-      .then(data => {
-          res.send({
-              status: "Success",
-              data: data
-          });
+      query = `SELECT P.ID AS PRODUCT_ID, F.ID AS FARM_ID, F.FARM_NAME, F.FARM_ADDRESS,
+      P.PRODUCT_NAME, P.PRODUCT_DESC, P.PRODUCT_PRICE, P.UNIT_WEIGHT, P.UNIT_NAME,
+      PI.ID AS IMAGE_ID, PI.IMAGE
+      FROM PRODUCT P, FARM F, PRODUCT_IMAGE PI
+      WHERE P.FARM_ID = F.ID AND PI.PRODUCT_ID = P.ID`
+    }
+    try {
+      var [result, metadata] = await sequelize.query(query)
+      res.send({
+        status: "Success",
+        data: result
       })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Error occurred while retrieving products"
-        });
+    } catch (error) {
+      res.status(500).send({
+        message:
+          error.message || "Error occurred while fetching products"
       });
     }
 }
 
-
 const updateProduct = (req, res) => {
     if (!req.body.id || !req.body.category_id || !req.body.product_name 
-        || !req.body.product_desc || !req.body.product_price) {
+        || !req.body.product_desc || !req.body.product_price || !req.body.unit_weight
+        || !req.body.unit_name) {
         res.status(400).send({
             status: "Failed",
             message: "Content can not be empty!"
@@ -105,7 +110,9 @@ const updateProduct = (req, res) => {
         category_id: req.body.category_id,
         product_name: req.body.product_name,
         product_desc: req.body.product_desc,
-        product_price: req.body.product_price
+        product_price: req.body.product_price,
+        unit_weight: req.body.unit_weight,
+        unit_name: req.body.unit_name
     }
 
     Product.update(product, {

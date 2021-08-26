@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const passport = require('passport');
+require('./src/config/passport')(passport)
 
 // BASE URL CONFIG
 const ENVIRONMENT = process.env.ENV || "development";
@@ -28,6 +30,10 @@ app.use(cors(corsOptions));
 // EXPRESS CONFIG
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
+
+// PASSPORT
+app.use(passport.initialize())
+app.use(passport.session())
 
 // ROUTER
 const router = require('./src/routes/indexRoutes');

@@ -1,6 +1,9 @@
 # Dependency directories
 node_modules/
 
+# Uploaded data
+uploads/*
+
 # Files
 .env
 *.cmd
