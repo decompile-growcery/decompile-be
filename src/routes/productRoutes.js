@@ -8,9 +8,9 @@ var router = require("express").Router();
 
 router.post("/product", auth.verifyToken, upload.uploadProduct, farm.getFarmId, product.createProduct, productImage.createProductImage)
 router.put("/product", auth.verifyToken, product.updateProduct)
-router.get("/product/:id", auth.verifyToken, product.getProduct)
+router.get("/product/:id", product.getProduct)
 router.delete("/product/:id", auth.verifyToken, product.deleteProduct)
-router.get("/products", auth.verifyToken, product.seeProducts)
+router.get("/products", product.seeProducts)
 
 router.delete("/delete-product-image/:id", auth.verifyToken, productImage.findProductImage, unlink.unlinkImage, productImage.deleteProductImage)
 router.post("/upload-product-image", auth.verifyToken, upload.uploadProduct, productImage.createProductImage)
