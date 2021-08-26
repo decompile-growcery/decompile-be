@@ -4,7 +4,7 @@ const CartItem = db.cartitem;
 
 const addCartItem = (req, res) => {
     // Check if data is complete
-	product_id = req.params.product_id;
+	product_id = req.body.product_id;
     if (!product_id) {
         res.status(400).send({
             status: "Failed",
@@ -59,7 +59,7 @@ const addCartItem = (req, res) => {
 
 const removeCartItem = (req, res) => {
     // Check if data is complete
-	product_id = req.params.product_id
+	product_id = req.body.product_id
     if (!product_id) {
         res.status(400).send({
             status: "Failed",
@@ -126,7 +126,7 @@ const getCartItems = (req, res) => {
             status: "Success",
             data: data,
 			product_count: data.length,
-			message: data.length + " different products found"
+			message: data.length + " products found"
         });
     })
     .catch(err => {
@@ -134,7 +134,7 @@ const getCartItems = (req, res) => {
 		status: "Success",
         data: {},
 		product_count: 0,
-		message: "0 different products found"
+		message: "0 products found"
       });
     });
 }
