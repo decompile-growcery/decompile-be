@@ -49,3 +49,8 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => {
     console.log(`App running on port ${port}`)
 })
+
+// Just A message
+app.get('/',function(req, res){
+	res.send("Growcery Backend is up and running...");
+})

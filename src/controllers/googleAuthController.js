@@ -15,7 +15,6 @@ const getGoogleAuthURL = (req, res) => {
 const authGoogle = async (req, res) => {
 	try {
 		res.send(gAuth.getGoogleAccount(req.query.code));
-		console.log(123);
 	}catch(e){
 		res.send({
 			"status": "failed",
