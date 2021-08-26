@@ -1,12 +1,10 @@
 const db = require("../models");
 const sequelize = db.sequelize;
-const { QueryTypes } = require('sequelize');
 const Product = db.product;
-const ProductImage = db.product_image;
 
 const createProduct = (req, res, next) => {
     if (!req.body.category_id || !req.body.product_name || !req.body.product_desc || !req.body.product_price
-      || !req.body.unit_weight || !req.body.unit_name) {
+      || !req.body.unit_weight || !req.body.unit_name || !req.body.stock || !req.body.product_image) {
         res.status(400).send({
             status: "Failed",
             message: "Content can not be empty!"
@@ -21,25 +19,28 @@ const createProduct = (req, res, next) => {
         product_desc: req.body.product_desc,
         product_price: req.body.product_price,
         unit_weight: req.body.unit_weight,
-        unit_name: req.body.unit_name
+        unit_name: req.body.unit_name,
+        stock: req.body.stock,
+        is_fresh: req.body.is_fresh
     }
 
-    Product.create(product)
-        .then(data => {
-            req.data = data
-            next()
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                err.message || "Error occurred while creating product"
-            });
-    });
+    // Product.create(product)
+    //     .then(data => {
+    //         req.data = data
+    //         next()
+    //     })
+    //     .catch(err => {
+    //         res.status(500).send({
+    //             message:
+    //             err.message || "Error occurred while creating product"
+    //         });
+    // });
 }
 
 const getProduct = async (req, res) => {
   query = `SELECT P.ID AS PRODUCT_ID, F.ID AS FARM_ID, F.FARM_NAME, F.FARM_ADDRESS,
       P.PRODUCT_NAME, P.PRODUCT_DESC, P.PRODUCT_PRICE, P.UNIT_WEIGHT, P.UNIT_NAME,
+      P.STOCK, P.IS_FRESH, P.DISCOUNT,
       PI.ID AS IMAGE_ID, PI.IMAGE
       FROM PRODUCT P, FARM F, PRODUCT_IMAGE PI
       WHERE P.FARM_ID = F.ID AND PI.PRODUCT_ID = P.ID 
@@ -63,6 +64,7 @@ const seeProducts = async (req, res) => {
     if (req.query.category_id) {
       query = `SELECT P.ID AS PRODUCT_ID, F.ID AS FARM_ID, F.FARM_NAME, F.FARM_ADDRESS,
       P.PRODUCT_NAME, P.PRODUCT_DESC, P.PRODUCT_PRICE, P.UNIT_WEIGHT, P.UNIT_NAME,
+      P.STOCK, P.IS_FRESH, P.DISCOUNT,
       PI.ID AS IMAGE_ID, PI.IMAGE
       FROM PRODUCT P, FARM F, PRODUCT_IMAGE PI
       WHERE P.FARM_ID = F.ID AND PI.PRODUCT_ID = P.ID
@@ -70,6 +72,7 @@ const seeProducts = async (req, res) => {
     } else if (req.query.farm_id) {
       query = `SELECT P.ID AS PRODUCT_ID, F.ID AS FARM_ID, F.FARM_NAME, F.FARM_ADDRESS,
       P.PRODUCT_NAME, P.PRODUCT_DESC, P.PRODUCT_PRICE, P.UNIT_WEIGHT, P.UNIT_NAME,
+      P.STOCK, P.IS_FRESH, P.DISCOUNT,
       PI.ID AS IMAGE_ID, PI.IMAGE
       FROM PRODUCT P, FARM F, PRODUCT_IMAGE PI
       WHERE P.FARM_ID = F.ID AND PI.PRODUCT_ID = P.ID 
@@ -77,6 +80,7 @@ const seeProducts = async (req, res) => {
     } else {
       query = `SELECT P.ID AS PRODUCT_ID, F.ID AS FARM_ID, F.FARM_NAME, F.FARM_ADDRESS,
       P.PRODUCT_NAME, P.PRODUCT_DESC, P.PRODUCT_PRICE, P.UNIT_WEIGHT, P.UNIT_NAME,
+      P.STOCK, P.IS_FRESH, P.DISCOUNT,
       PI.ID AS IMAGE_ID, PI.IMAGE
       FROM PRODUCT P, FARM F, PRODUCT_IMAGE PI
       WHERE P.FARM_ID = F.ID AND PI.PRODUCT_ID = P.ID`
@@ -98,7 +102,7 @@ const seeProducts = async (req, res) => {
 const updateProduct = (req, res) => {
     if (!req.body.id || !req.body.category_id || !req.body.product_name 
         || !req.body.product_desc || !req.body.product_price || !req.body.unit_weight
-        || !req.body.unit_name) {
+        || !req.body.unit_name || !req.body.stock || !req.body.discount) {
         res.status(400).send({
             status: "Failed",
             message: "Content can not be empty!"
@@ -112,7 +116,10 @@ const updateProduct = (req, res) => {
         product_desc: req.body.product_desc,
         product_price: req.body.product_price,
         unit_weight: req.body.unit_weight,
-        unit_name: req.body.unit_name
+        unit_name: req.body.unit_name,
+        stock: req.body.stock,
+        is_fresh: req.body.is_fresh,
+        discount: req.body.discount
     }
 
     Product.update(product, {

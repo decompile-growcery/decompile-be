@@ -42,7 +42,7 @@ app.use('/growcery', router);
 // DATABASE
 const db = require("./src/models");
 // add this to sync / create new table in db
-db.sequelize.sync();
+// db.sequelize.sync();
 
 // PORT CONFIG
 const port = process.env.PORT || 5000;

@@ -33,6 +33,18 @@ module.exports = (sequelize, Sequelize) => {
       unit_name: {
         type: Sequelize.STRING,
         allowNull: false
+      },
+      stock: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      is_fresh: {
+        type: Sequelize.BOOLEAN,
+        default: true
+      },
+      discount: {
+        type: Sequelize.INTEGER,
+        default: 0
       }
     },
       {
