@@ -2,7 +2,6 @@ const db = require("../models");
 var crypto = require('crypto'); 
 const User = db.users;
 const jwt = require('jsonwebtoken');
-const passport = require('passport');
 
 const createUser = (req, res) => {
 	// Check if data is complete
@@ -90,8 +89,7 @@ const authUser = (req, res) => {
 }
 
 const googleAuthJWT = (req, res) => {
-    console.log("masuk jwt")
-    var accessToken = jwt.sign({id: user.id}, process.env.JWT_SECRET, {
+    var accessToken = jwt.sign({id: req.user.id}, process.env.JWT_SECRET, {
         expiresIn: '1d'
    })
     res.send({
