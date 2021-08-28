@@ -1,5 +1,4 @@
 const db = require("../models");
-const jwt = require('jsonwebtoken')
 const CartItem = db.cartitem;
 
 const addCartItem = (req, res) => {

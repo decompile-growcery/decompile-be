@@ -51,7 +51,7 @@ const db = require("./src/models");
 // Sync Database in production environment
 if (ENVIRONMENT == 'production'){
 	db.sequelize.sync();
-}	
+}
 
 // PORT CONFIG
 // Must match up with /etc/nginx/frameworks-available/nodejs.conf!
