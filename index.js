@@ -5,6 +5,9 @@ const cors = require('cors');
 const passport = require('passport');
 require('./src/config/passport')(passport)
 
+// Required for running behind nginx
+app.set('trust proxy', 'loopback');
+
 // BASE URL CONFIG
 const ENVIRONMENT = process.env.ENV || "development";
 if (ENVIRONMENT == "development"){
@@ -45,7 +48,8 @@ const db = require("./src/models");
 // db.sequelize.sync();
 
 // PORT CONFIG
-const port = process.argv.slice(2)[0] || process.env.PORT || 5000;
+// Must match up with /etc/nginx/frameworks-available/nodejs.conf!
+const port = process.argv.slice(2)[0] || process.env.PORT || 8081;
 app.listen(port, () => {
 	app.get('/',function(req, res){
 		res.send("Growcery Backend is up and running...");
