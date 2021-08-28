@@ -47,7 +47,11 @@ app.use('/growcery', router);
 // DATABASE
 const db = require("./src/models");
 // add this to sync / create new table in db
-// db.sequelize.sync();
+
+// Sync Database on production environment
+if (ENVIRONMENT === 'production') {
+	db.sequelize.sync();
+}
 
 // PORT CONFIG
 // Must match up with /etc/nginx/frameworks-available/nodejs.conf!
