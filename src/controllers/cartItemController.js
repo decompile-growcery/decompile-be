@@ -1,5 +1,5 @@
 const db = require("../models");
-const CartItem = db.cartitem;
+const CartItem = db.cart_item;
 
 const addCartItem = (req, res) => {
     // Check if data is complete
@@ -11,7 +11,7 @@ const addCartItem = (req, res) => {
         });
         return;
     }
-	
+
     const cart_item = {
         user_id: req.user.id,
         product_id: product_id
@@ -126,7 +126,7 @@ const getCartItems = (req, res) => {
             data: data,
 			product_count: data.length,
 			message: data.length + " products found"
-        });
+        })
     })
     .catch(err => {
       res.json({
@@ -134,7 +134,7 @@ const getCartItems = (req, res) => {
         data: {},
 		product_count: 0,
 		message: "0 products found"
-      });
+      })
     });
 }
 
