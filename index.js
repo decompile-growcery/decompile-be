@@ -45,7 +45,7 @@ const db = require("./src/models");
 // db.sequelize.sync();
 
 // PORT CONFIG
-const port = process.env.PORT || 5000;
+const port = process.argv.slice(2)[0] || process.env.PORT || 5000;
 app.listen(port, () => {
 	app.get('/',function(req, res){
 		res.send("Growcery Backend is up and running...");
