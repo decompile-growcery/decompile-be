@@ -55,7 +55,7 @@ const port = process.argv.slice(2)[0] || process.env.PORT || 8081;
 app.listen(port, () => {
 	welcome_info = {message: "Growcery Backend is up and running...", last_update: "Unknown"};
 	app.get('/',function(req, res){
-		dir = exec("git log -1 --format=%cd", function(err, stdout, stderr) {
+		exec("git log -1 --format=%cd", function(err, stdout, stderr) {
 			if (!err) {
 				welcome_info.last_update = stdout.trim();
 			}
