@@ -3,6 +3,8 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const passport = require('passport');
+const exec = require('child_process').exec;
+
 require('./src/config/passport')(passport)
 
 // Required for running behind nginx
@@ -51,8 +53,14 @@ const db = require("./src/models");
 // Must match up with /etc/nginx/frameworks-available/nodejs.conf!
 const port = process.argv.slice(2)[0] || process.env.PORT || 8081;
 app.listen(port, () => {
+	welcome_info = {message: "Growcery Backend is up and running...", last_update: "Unknown"};
 	app.get('/',function(req, res){
-		res.send("Growcery Backend is up and running...");
+		dir = exec("git log -1 --format=%cd", function(err, stdout, stderr) {
+			if (!err) {
+				welcome_info.last_update = stdout.trim();
+			}
+		});
+		res.send(welcome_info);
 	})
     console.log(`App running on port ${port}`)
 })
