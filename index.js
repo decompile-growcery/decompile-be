@@ -15,7 +15,7 @@ const ENVIRONMENT = process.env.ENV || "development";
 if (ENVIRONMENT == "development"){
 	const base_url = "http://localhost:8080";
 }else{
-	const base_url = "https://growcery-be.herokuapp.com";
+	const base_url = "https://deco3801-decompile.uqcloud.net/";
 }
 
 // CORS CONFIG
@@ -49,7 +49,7 @@ const db = require("./src/models");
 // add this to sync / create new table in db
 
 // Sync Database in production environment
-if (ENVIRONMENT === 'production') {
+if (ENVIRONMENT == 'production') {
 	db.sequelize.sync();
 }
 
