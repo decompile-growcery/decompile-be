@@ -59,8 +59,8 @@ app.listen(port, () => {
 			if (!err) {
 				welcome_info.last_update = stdout.trim();
 			}
+			res.send(welcome_info);
 		});
-		res.send(welcome_info);
 	})
     console.log(`App running on port ${port}`)
 })
