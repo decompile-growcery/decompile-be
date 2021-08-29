@@ -195,16 +195,24 @@ const refundPaypalPayment = (req, res) => {
 
 const getCheckoutURL = (req, res) => {
     // Check if data is complete
-	paypal_payment_id = req.params.paypalPaymentID
-	if (!paypal_payment_id) {
+	payment_id = req.params.payment_id
+	if (!payment_id) {
         res.status(400).send({
             status: "Failed",
-            message: "Missing paypal_payment_id"
+            message: "Missing payment_id"
         });
         return;
     }
 
-	res.json({status: "Success",data: "https://www.sandbox.paypal.com/checkoutnow?token=" + paypal_payment_id,  message: "Paypal Checkout URL has successfully been retrieved"});
+	Payment.findOne({where: {user_id: req.user.id , id: payment_id}})
+	.then(data => {
+		paypal_payment_id = data.paypal_payment_id;
+		res.json({status: "Success",data: "https://www.sandbox.paypal.com/checkoutnow?token=" + paypal_payment_id,  message: "Paypal Checkout URL has successfully been retrieved"});
+	})
+	.catch(err => {
+		res.status(404).json({status: "Failed",message: "Payment Data is not found"});
+	})
+	
 }
 
 
