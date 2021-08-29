@@ -138,10 +138,12 @@ const capturePaypalPayment = (req, res) => {
 			res.json({status: "Success",data: api_response,  message: "Payment has successfully been processed"});
 		})
 		.catch((err) => {
+			console.error(err.message);
 			res.status(500).json({status: "Failed", message: "Failed to process the payment"})
 		})
 	})
-	.catch(error => {
+	.catch(err => {
+		console.error(err.message);
 		res.status(500).json({status: "Failed", message: "Failed to process the payment"})
 	})
 }
