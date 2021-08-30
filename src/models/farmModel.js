@@ -16,17 +16,14 @@ module.exports = (sequelize, Sequelize) => {
       },
       farm_address: {
         type: Sequelize.STRING,
-        allowNull: false
       },
       pick_up: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        default: 0 
+        default: 1
       },
       shipping: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        default: 0 
+        default: 1
       }
     },
     {

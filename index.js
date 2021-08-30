@@ -54,7 +54,7 @@ if (ENVIRONMENT == 'production') {
 
 // PORT CONFIG
 // Must match up with /etc/nginx/frameworks-available/nodejs.conf!
-const port = process.argv.slice(2)[0] || process.env.PORT || 8081;
+const port = process.argv.slice(2)[0] || process.env.PORT || 5000;
 app.listen(port, () => {
 	welcome_info = {message: "Growcery Backend is up and running...", last_update: "Unknown"};
 	app.get('/',function(req, res){
