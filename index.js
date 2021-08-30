@@ -48,7 +48,7 @@ app.use('/growcery', router);
 const db = require("./src/models");
 
 // Sync Database in production environment
-if (ENVIRONMENT == 'production') {
+if (ENVIRONMENT == 'production'){
 	db.sequelize.sync();
 }
 

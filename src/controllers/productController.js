@@ -38,13 +38,13 @@ const createProduct = (req, res, next) => {
 }
 
 const getProduct = async (req, res) => {
-  query = `SELECT P.ID AS PRODUCT_ID, F.ID AS FARM_ID, F.FARM_NAME, F.FARM_ADDRESS,
-      P.PRODUCT_NAME, P.PRODUCT_DESC, P.PRODUCT_PRICE, P.UNIT_WEIGHT, P.UNIT_NAME,
-      P.STOCK, P.IS_FRESH, P.DISCOUNT,
-      PI.ID AS IMAGE_ID, PI.IMAGE
-      FROM PRODUCT P, FARM F, PRODUCT_IMAGE PI
-      WHERE P.FARM_ID = F.ID AND PI.PRODUCT_ID = P.ID 
-      AND P.ID = ${req.params.id}`
+  query = `select p.id as product_id, f.id as farm_id, f.farm_name, f.farm_address,
+	p.product_name, p.product_desc, p.product_price, p.unit_weight, p.unit_name,
+	p.stock, p.is_fresh, p.discount,
+	pi.id as image_id, pi.image
+	from product p, farm f, product_image pi
+	where p.farm_id = f.id and pi.product_id = p.id 
+	and p.id = ${req.params.id}`
   try {
     var [result, metadata] = await sequelize.query(query)
       res.send({
@@ -62,29 +62,29 @@ const getProduct = async (req, res) => {
 const seeProducts = async (req, res) => {
     let query;
     if (req.query.category_id) {
-      query = `SELECT P.ID AS PRODUCT_ID, F.ID AS FARM_ID, F.FARM_NAME, F.FARM_ADDRESS,
-      P.PRODUCT_NAME, P.PRODUCT_DESC, P.PRODUCT_PRICE, P.UNIT_WEIGHT, P.UNIT_NAME,
-      P.STOCK, P.IS_FRESH, P.DISCOUNT,
-      PI.ID AS IMAGE_ID, PI.IMAGE
-      FROM PRODUCT P, FARM F, PRODUCT_IMAGE PI
-      WHERE P.FARM_ID = F.ID AND PI.PRODUCT_ID = P.ID
-      AND P.CATEGORY_ID = ${req.query.category_id}`
-    } else if (req.query.farm_id) {
-      query = `SELECT P.ID AS PRODUCT_ID, F.ID AS FARM_ID, F.FARM_NAME, F.FARM_ADDRESS,
-      P.PRODUCT_NAME, P.PRODUCT_DESC, P.PRODUCT_PRICE, P.UNIT_WEIGHT, P.UNIT_NAME,
-      P.STOCK, P.IS_FRESH, P.DISCOUNT,
-      PI.ID AS IMAGE_ID, PI.IMAGE
-      FROM PRODUCT P, FARM F, PRODUCT_IMAGE PI
-      WHERE P.FARM_ID = F.ID AND PI.PRODUCT_ID = P.ID 
-      AND F.ID = ${req.query.farm_id}`
-    } else {
-      query = `SELECT P.ID AS PRODUCT_ID, F.ID AS FARM_ID, F.FARM_NAME, F.FARM_ADDRESS,
-      P.PRODUCT_NAME, P.PRODUCT_DESC, P.PRODUCT_PRICE, P.UNIT_WEIGHT, P.UNIT_NAME,
-      P.STOCK, P.IS_FRESH, P.DISCOUNT,
-      PI.ID AS IMAGE_ID, PI.IMAGE
-      FROM PRODUCT P, FARM F, PRODUCT_IMAGE PI
-      WHERE P.FARM_ID = F.ID AND PI.PRODUCT_ID = P.ID`
-    }
+		query = `select p.id as product_id, f.id as farm_id, f.farm_name, f.farm_address,
+		p.product_name, p.product_desc, p.product_price, p.unit_weight, p.unit_name,
+		p.stock, p.is_fresh, p.discount,
+		pi.id as image_id, pi.image
+		from product p, farm f, product_image pi
+		where p.farm_id = f.id and pi.product_id = p.id
+		and p.category_id = ${req.query.category_id}`
+	  } else if (req.query.farm_id) {
+		query = `select p.id as product_id, f.id as farm_id, f.farm_name, f.farm_address,
+		p.product_name, p.product_desc, p.product_price, p.unit_weight, p.unit_name,
+		p.stock, p.is_fresh, p.discount,
+		pi.id as image_id, pi.image
+		from product p, farm f, product_image pi
+		where p.farm_id = f.id and pi.product_id = p.id 
+		and f.id = ${req.query.farm_id}`
+	  } else {
+		query = `select p.id as product_id, f.id as farm_id, f.farm_name, f.farm_address,
+		p.product_name, p.product_desc, p.product_price, p.unit_weight, p.unit_name,
+		p.stock, p.is_fresh, p.discount,
+		pi.id as image_id, pi.image
+		from product p, farm f, product_image pi
+		where p.farm_id = f.id and pi.product_id = p.id`
+	  }
     try {
       var [result, metadata] = await sequelize.query(query)
       res.send({
