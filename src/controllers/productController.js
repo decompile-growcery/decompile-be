@@ -4,7 +4,7 @@ const Product = db.product;
 
 const createProduct = (req, res, next) => {
     if (!req.body.category_id || !req.body.product_name || !req.body.product_desc || !req.body.product_price
-      || !req.body.unit_weight || !req.body.unit_name || !req.body.stock || !req.body.product_image) {
+      || !req.body.unit_weight || !req.body.unit_name || !req.body.stock) {
         res.status(400).send({
             status: "Failed",
             message: "Content can not be empty!"
@@ -24,17 +24,17 @@ const createProduct = (req, res, next) => {
         is_fresh: req.body.is_fresh
     }
 
-    // Product.create(product)
-    //     .then(data => {
-    //         req.data = data
-    //         next()
-    //     })
-    //     .catch(err => {
-    //         res.status(500).send({
-    //             message:
-    //             err.message || "Error occurred while creating product"
-    //         });
-    // });
+    Product.create(product)
+        .then(data => {
+            req.data = data
+            next()
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                err.message || "Error occurred while creating product"
+            });
+    });
 }
 
 const getProduct = async (req, res) => {

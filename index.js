@@ -46,7 +46,6 @@ app.use('/growcery', router);
 
 // DATABASE
 const db = require("./src/models");
-// add this to sync / create new table in db
 
 // Sync Database in production environment
 if (ENVIRONMENT == 'production'){

@@ -3,6 +3,7 @@
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 const db = require("../models");
 const User = db.users;
+const Farm = db.farm;
 
 module.exports = function (passport) {
   passport.use(
@@ -14,9 +15,10 @@ module.exports = function (passport) {
       },
       async (accessToken, refreshToken, profile, done) => {
         //get the user data from google 
+        var name = "user" + Math.random().toString(36).substring(2,15) 
         const newUser = {
           googleId: profile.id,
-          username: profile.displayName,
+          username: name,
           first_name: profile.name.givenName,
           last_name: profile.name.familyName,
           email: profile.emails[0].value
@@ -31,6 +33,13 @@ module.exports = function (passport) {
           } else {
             // if user is not preset in our database save user data to database.
             user = await User.create(newUser)
+            const farmName = newUser.username + `'s farm`
+            const farmData = {
+                user_id: user.id,
+                farm_name: farmName
+            }
+            farm = await Farm.create(farmData)
+            
             done(null, user)
           }
         } catch (err) {

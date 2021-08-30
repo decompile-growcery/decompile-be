@@ -3,7 +3,7 @@ var crypto = require('crypto');
 const User = db.users;
 const jwt = require('jsonwebtoken');
 
-const createUser = (req, res) => {
+const createUser = (req, res, next) => {
 	// Check if data is complete
     if (!req.body.username || !req.body.password || !req.body.email || !req.body.first_name || !req.body.last_name) {
         res.status(400).send({
@@ -28,10 +28,8 @@ const createUser = (req, res) => {
 
     User.create(user)
         .then(data => {
-            res.send({
-                status: "Success",
-                message: "User is created successfully"
-            });
+            req.data = data;
+            next()
         })
         .catch(err => {
             res.status(500).send({

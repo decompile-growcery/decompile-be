@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const Farm = sequelize.define("farm", {
+    const Order = sequelize.define("ORDER", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -8,27 +8,20 @@ module.exports = (sequelize, Sequelize) => {
       },
       user_id: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
-      farm_name: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      farm_address: {
-        type: Sequelize.STRING,
-      },
-      pick_up: {
+      payment_id: {
         type: Sequelize.INTEGER,
-        default: 1
+        allowNull: false,
       },
-      shipping: {
+      address_id: {
         type: Sequelize.INTEGER,
-        default: 1
+        allowNull: false,
       }
     },
     {
       freezeTableName: true,
       timestamps: false
     });
-    return Farm;
+    return Order;
 };

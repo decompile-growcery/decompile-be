@@ -18,21 +18,11 @@ const getFarmId = (req, res, next) => {
     });
   }
 
-const createFarm = (req, res) => {
-    if (!req.body.farm_name || !req.body.farm_address) {
-          res.status(400).send({
-              status: "Failed",
-              message: "Content can not be empty!"
-          });
-          return;
-      }
-  
+const createFarm = (req, res) => { 
+      const name = req.data.username + `'s farm`
       const farm = {
-          user_id: req.user.id,
-          farm_name: req.body.farm_name,
-          farm_address: req.body.farm_address,
-          pick_up: req.body.pick_up,
-          shipping: req.body.shipping
+          user_id: req.data.id,
+          farm_name: name
       }
   
       Farm.create(farm)
