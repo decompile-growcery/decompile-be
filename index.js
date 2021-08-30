@@ -4,6 +4,7 @@ const app = express();
 const cors = require('cors');
 const passport = require('passport');
 const exec = require('child_process').exec;
+const path = require('path')
 
 require('./src/config/passport')(passport)
 
@@ -35,6 +36,9 @@ app.use(cors(corsOptions));
 // EXPRESS CONFIG
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
+
+// IMAGES
+app.use('/growcery/static', express.static(path.join(__dirname, 'uploads')))
 
 // PASSPORT
 app.use(passport.initialize())

@@ -14,7 +14,7 @@ const createProductImage = (req, res) => {
     for(let i=0; i<req.files.length; i++) {
         ProductImage.create({
             product_id: id,
-            image: req.files[i].path
+            image: req.files[i].filename
         })
         .then(data => {
             res.send({
