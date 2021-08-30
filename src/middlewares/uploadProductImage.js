@@ -4,7 +4,7 @@ const db = require("../models");
 
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
-      callback(null, './src/uploads')
+      callback(null, './uploads')
     },
     filename: (req, file, callback) => {
         const match = ["image/png", "image/jpeg", "image/jpg"];
