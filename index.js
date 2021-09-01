@@ -61,14 +61,9 @@ if (ENVIRONMENT == 'production'){
 }
 
 app.listen(port, () => {
-	welcome_info = {message: "Growcery Backend is up and running...", last_update: "Unknown"};
 	app.get('/',function(req, res){
-		exec("git log -1 --format=%cd", function(err, stdout, stderr) {
-			if (!err) {
-				welcome_info.last_update = stdout.trim();
-			}
-			res.send(welcome_info);
-		});
+		welcome_info = {message: "Growcery Backend is up and running...", last_update: process.env.LAST_UPDATE || "Unknown"};
+		res.send(welcome_info);
 	})
     console.log(`App running on port ${port}`)
 })
