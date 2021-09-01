@@ -149,7 +149,9 @@ const capturePaypalPayment = (req, res) => {
 }
 
 const refundPaypalPayment = (req, res) => {
-	//FIXME: Does it work?
+	// FIXME: Does it work? 
+	// Sometimes it works (in the past), but sometimes it does not work \(._.")/
+
     // Check if data is complete
 	payment_id = req.params.payment_id;
 	if (!payment_id) {
@@ -190,10 +192,7 @@ const refundPaypalPayment = (req, res) => {
 		console.error (err.message);
 		res.status(500).json({status: "Failed", message: "Failed to process payment refund"})
 	})
-
-	
 }
-
 
 const getCheckoutURL = (req, res) => {
     // Check if data is complete
@@ -213,10 +212,8 @@ const getCheckoutURL = (req, res) => {
 	})
 	.catch(err => {
 		res.status(404).json({status: "Failed",message: "Payment Data is not found"});
-	})
-	
+	})	
 }
-
 
 module.exports = {
     createPayment,
