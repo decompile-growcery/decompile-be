@@ -14,7 +14,7 @@ app.set('trust proxy', 'loopback');
 // BASE URL CONFIG
 const ENVIRONMENT = process.env.ENV || "development";
 if (ENVIRONMENT == "development"){
-	const base_url = "http://localhost:8080";
+	const base_url = "http://localhost:8081/";
 }else{
 	const base_url = "https://deco3801-decompile.uqcloud.net/";
 }
