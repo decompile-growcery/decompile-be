@@ -11,10 +11,14 @@ require('./src/config/passport')(passport)
 // Required for running behind nginx
 app.set('trust proxy', 'loopback');
 
+// PORT CONFIG
+// Must match up with /etc/nginx/frameworks-available/nodejs.conf!
+const port = process.argv.slice(2)[0] || process.env.PORT || 8081;
+
 // BASE URL CONFIG
 const ENVIRONMENT = process.env.ENV || "development";
 if (ENVIRONMENT == "development"){
-	const base_url = "http://localhost:8081/";
+	const base_url = "http://localhost:" + port + "/";
 }else{
 	const base_url = "https://deco3801-decompile.uqcloud.net/";
 }
@@ -56,9 +60,6 @@ if (ENVIRONMENT == 'production'){
 	db.sequelize.sync();
 }
 
-// PORT CONFIG
-// Must match up with /etc/nginx/frameworks-available/nodejs.conf!
-const port = process.argv.slice(2)[0] || process.env.PORT || 8081;
 app.listen(port, () => {
 	welcome_info = {message: "Growcery Backend is up and running...", last_update: "Unknown"};
 	app.get('/',function(req, res){
