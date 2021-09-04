@@ -49,7 +49,7 @@ const getProduct = async (req, res) => {
     var [result, metadata] = await sequelize.query(query)
       res.send({
         status: "Success",
-        data: result
+        data: result[0]
       })
   } catch (error) {
     res.status(500).send({
