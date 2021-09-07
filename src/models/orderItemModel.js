@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const OrderItem = sequelize.define("ORDER_ITEM", {
+    const OrderItem = sequelize.define("order_item", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -13,7 +13,7 @@ module.exports = (sequelize, Sequelize) => {
       product_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-      }
+      },
     },
     {
       freezeTableName: true,
