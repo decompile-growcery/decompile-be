@@ -49,11 +49,12 @@ const insertOrderItem = (req, res) => {
 
 const getOrdersByUser = async (req, res) => {
     try {
-        var query2 = `SELECT o.id as order_id, o.user_id, o.payment_id, o.address_id,
+        var query2 = `SELECT o.id as order_id, o.user_id, o.payment_id, o.address_id, s.status,
         oi.id as order_item_id, oi.product_id, p.id as product_id, f.id as farm_id, f.farm_name, f.farm_address,
         p.product_name, p.product_desc, p.product_price, p.unit_weight, p.unit_name, p.stock, p.is_fresh, p.discount, 
         pi.id as image_id, pi.image 
         FROM orders o
+        JOIN order_status s ON s.id = o.status_id
         JOIN order_item oi ON o.id = oi.order_id
         JOIN product p ON oi.product_id = p.id
         JOIN farm f ON p.farm_id = f.id
@@ -80,7 +81,7 @@ const updateOrderStatus = (req, res) => {
         status_id: req.body.status_id
     }, {
         where: {
-            order_id: req.body.order_id
+            id: req.body.order_id
         }
     })
     .then(data => {
