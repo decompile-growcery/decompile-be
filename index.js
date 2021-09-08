@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const passport = require('passport');
-const exec = require('child_process').exec;
+const fs = require('fs')
 const path = require('path')
 
 require('./src/config/passport')(passport)
@@ -62,8 +62,16 @@ if (ENVIRONMENT == 'production'){
 
 app.listen(port, () => {
 	app.get('/',function(req, res){
-		welcome_info = {message: "Growcery Backend is up and running...", last_update: process.env.LAST_UPDATE || "Unknown"};
-		res.send(welcome_info);
+		last_update = "Unknown";
+		fs.readFile('.last_update', 'utf8' , (err, data) => {
+			if (err) {
+				welcome_info = {message: "Growcery Backend is up and running...", last_update: last_update};
+				res.send(welcome_info);
+				return;
+			}
+			welcome_info = {message: "Growcery Backend is up and running...", last_update: data};
+			res.send(welcome_info);
+		});	
 	})
     console.log(`App running on port ${port}`)
 })
