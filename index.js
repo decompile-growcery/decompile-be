@@ -55,10 +55,8 @@ app.use('/growcery', router);
 // DATABASE
 const db = require("./src/models");
 
-// Sync Database in production environment
-if (ENVIRONMENT == 'production'){
-	db.sequelize.sync();
-}
+// FIXME: Sync Database only in production environment
+db.sequelize.sync();
 
 app.listen(port, () => {
 	app.get('/',function(req, res){
