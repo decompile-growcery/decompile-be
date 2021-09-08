@@ -1,4 +1,5 @@
 const db = require("../models");
+const sequelize = db.sequelize;
 const CartItem = db.cart_item;
 
 const addCartItem = (req, res) => {
@@ -14,7 +15,7 @@ const addCartItem = (req, res) => {
 
     const cart_item = {
         user_id: req.user.id,
-        product_id: product_id
+        product_id: parseInt(product_id)
     }
 
     CartItem.findOrCreate({
@@ -48,12 +49,13 @@ const addCartItem = (req, res) => {
 			}
         })
         .catch(err => {
-			console.trace(err.message);
+			console.error(err.message);
             res.status(500).send({
 				status: "Failed",
                 message: "Error occurred while adding product to cart"
             });
-    });
+    	}
+	);
 }
 
 const removeCartItem = (req, res) => {
@@ -118,24 +120,32 @@ const removeCartItem = (req, res) => {
 	});
 }
 
-const getCartItems = (req, res) => {
-    CartItem.findAll({ where: { user_id: req.user.id } })
-    .then(data => {
-        res.json({
-            status: "Success",
-            data: data,
-			product_count: data.length,
-			message: data.length + " products found"
-        })
-    })
-    .catch(err => {
-      res.json({
-		status: "Success",
-        data: {},
-		product_count: 0,
-		message: "0 products found"
-      })
-    });
+// TODO: Maybe change this implementation using include. 
+// I tried using Include, but it searches for products instead of product :(
+const getCartItems = async (req, res) => {
+	query = `select product.* , product_image.* , cart_item.*
+			from product, product_image, cart_item
+			where product.id = product_image.product_id 
+					and product.id = cart_item.product_id
+					and cart_item.user_id = ${req.user.id}`;
+
+	try {
+		var [result, metadata] = await sequelize.query(query)
+		res.json({
+			status: "Success",
+			data: result,
+			product_count: result.length,
+			message: result.length + " products found"
+		})
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({
+			status: "Failed",
+			data: [],
+			product_count: 0,
+			message: "Failed to load cart item"
+		});
+	}
 }
 
 module.exports = {
