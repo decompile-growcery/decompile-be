@@ -59,6 +59,30 @@ const getProduct = async (req, res) => {
   }  
 }
 
+const searchProduct = async (req, res) => {
+	query = `select p.id as product_id, f.id as farm_id, f.farm_name, f.farm_address,
+	p.product_name, p.product_desc, p.product_price, p.unit_weight, p.unit_name,
+	p.stock, p.is_fresh, p.discount,
+	pi.id as image_id, pi.image
+from product p, farm f, product_image pi
+where pi.product_id = p.id and p.farm_id = f.id
+and p.product_name like '%${req.params.product_name}%'`;
+	try {
+		var [result, metadata] = await sequelize.query(query);
+		output = {
+			status: "Success",
+			data: result[0] || []
+		}
+		output.count = output.data.length;
+		res.json(output);
+	} catch (error) {
+		console.error(error.message);
+		res.status(500).send({
+			message: "Error occurred while fetching product"
+		});
+	}  
+}
+
 const seeProducts = async (req, res) => {
     let query;
     if (req.query.category_id) {
@@ -177,5 +201,6 @@ module.exports = {
     seeProducts,
     updateProduct,
     deleteProduct,
-    getProduct
+    getProduct,
+	searchProduct
 }
