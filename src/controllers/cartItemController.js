@@ -58,6 +58,41 @@ const addCartItem = (req, res) => {
 	);
 }
 
+const deleteCartItem = (req, res) => {
+    // Check if data is complete
+	product_id = req.body.product_id
+    if (!product_id) {
+        res.status(400).send({
+            status: "Failed",
+            message: "Product ID is not provided in the URL"
+        });
+        return;
+    }
+	// Delete the product from cart
+	CartItem.destroy({
+		where: { product_id: product_id }
+	})
+	.then(data => {
+		if (data == 1) {
+		  res.send({
+			status: "Success",
+			message: "Product has been deleted from cart"
+		  });
+		} else {
+		  res.send({
+			status: "Failed",
+			message: `Cannot delete Product with id=${id} from Cart`
+		  });
+		}
+	  })
+	.catch(err => {
+		console.trace(err.message);
+		res.status(500).send({
+			message: "Error occurred while deleting product from cart"
+		});
+	})
+}
+
 const removeCartItem = (req, res) => {
     // Check if data is complete
 	product_id = req.body.product_id
@@ -152,4 +187,5 @@ module.exports = {
     getCartItems,
 	addCartItem,
 	removeCartItem,
+	deleteCartItem,
 }

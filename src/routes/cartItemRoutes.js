@@ -5,5 +5,6 @@ var router = require("express").Router();
 router.post("/cart/add", verifyAuth.verifyToken , cartItem.addCartItem);
 router.get("/cart", verifyAuth.verifyToken , cartItem.getCartItems);
 router.delete("/cart/remove", verifyAuth.verifyToken , cartItem.removeCartItem);
+router.delete("/cart/delete", verifyAuth.verifyToken , cartItem.deleteCartItem);
 
 module.exports = router;
