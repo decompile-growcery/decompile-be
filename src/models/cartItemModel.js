@@ -13,7 +13,6 @@ module.exports = (sequelize, Sequelize) => {
       product_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-		unique: true,
       },
       quantity: {
         type: Sequelize.INTEGER,
