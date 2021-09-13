@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const Order = sequelize.define("ORDER", {
+    const Order = sequelize.define("orders", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -10,13 +10,25 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      address_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      status_id: {
+        type: Sequelize.INTEGER,
+        default: 1
+      },
       payment_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      address_id: {
-        type: Sequelize.INTEGER,
+      total_price: {
+        type: Sequelize.FLOAT,
         allowNull: false,
+      },
+      is_delivery: {
+        type: Sequelize.BOOLEAN,
+        default: 1
       }
     },
     {

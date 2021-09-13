@@ -20,7 +20,7 @@ db.farm = require("./farmModel.js")(sequelize, Sequelize);
 db.product = require("./productModel.js")(sequelize, Sequelize);
 db.product_image = require("./productImageModel.js")(sequelize, Sequelize);
 db.address = require("./addressModel.js")(sequelize, Sequelize);
-db.order = require("./orderModel.js")(sequelize, Sequelize);
+db.orders = require("./orderModel.js")(sequelize, Sequelize);
 db.order_item = require("./orderItemModel.js")(sequelize, Sequelize);
 db.payment = require("./paymentModel.js")(sequelize, Sequelize);
 
@@ -33,8 +33,8 @@ db.users.hasOne(db.farm, {foreignKey: 'user_id'})
 db.users.hasMany(db.cart_item, {foreignKey: 'user_id'})
 db.product.hasMany(db.cart_item, {foreignKey: 'product_id'})
 db.users.hasMany(db.address, {foreignKey: 'user_id'})
-db.users.hasMany(db.order, {foreignKey: 'user_id'})
-db.order.hasMany(db.order_item, {foreignKey: 'order_id'})
+db.users.hasMany(db.orders, {foreignKey: 'user_id'})
+db.orders.hasMany(db.order_item, {foreignKey: 'order_id'})
 db.order_item.hasMany(db.product, {foreignKey: 'product_id'})
 
 module.exports = db;
