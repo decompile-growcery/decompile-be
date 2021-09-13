@@ -8,8 +8,11 @@ const insertOrder = (req, res, next) => {
     var order = {
         user_id: req.user.id,
         address_id: req.body.address_id,
+        total_price: req.body.total_price,
+        is_delivery: req.body.is_delivery,
+        payment_id: req.payment_id,
+        status_id: req.body.status_id
     }
-
     Order.create(order)
     .then(data => {
         req.data = data;
@@ -24,13 +27,16 @@ const insertOrder = (req, res, next) => {
     })
 }
 
-const insertOrderItem = (req, res) => {
+const insertOrderItem = (req, res, next) => {
     var productList = req.product;
     var count = 0;
     for (let i = 0; i < productList.length; i++) {
         OrderItem.create({
             order_id: req.data.id,
-            product_id: productList[i]
+            product_id: productList[i].product_id,
+            note: productList[i].note,
+            amount: productList[i].amount,
+            price: productList[i].price,
         }).catch(error => {
             res.status(500).send({
                 status: "Failed",
@@ -42,7 +48,8 @@ const insertOrderItem = (req, res) => {
     if (count === productList.length) {
         res.send({
             status: "Success",
-            message: "Order created, waiting for payment"
+            message: "Order created, waiting for payment",
+            checkout_url: req.checkout_url
         })
     }
 }

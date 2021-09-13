@@ -2,20 +2,10 @@ const db = require("../models");
 const axios = require('axios');
 const Payment = db.payment;
 
-const createPayment = (req, res) => {
-    // Check if data is complete
-	order_id = req.body.order_id
-	if (!order_id) {
-        res.status(400).send({
-            status: "Failed",
-            message: "Missing order_id"
-        });
-        return;
-    }
-
+const createPayment = (req, res, next) => {
 	// TODO: Load the data from Order Models
 	currency_code = "AUD";
-	price = 1.02;
+	price = req.body.total_price;
 
 	// Make Paypal Order
 	let paypal_api_url = 'https://api-m.sandbox.paypal.com/v2/checkout/orders';
@@ -44,17 +34,19 @@ const createPayment = (req, res) => {
 		paypal_payment_id = api_response.id
 
 		response_data = {payment_status: payment_status, checkout_url: api_response.links[1].href}
-
+		console.log(response_data)
 		const payment_data = {
 			user_id: req.user.id,
-			order_id: order_id,
 			paypal_payment_id: paypal_payment_id,
 		}
 		
 		Payment.create(payment_data)
 			.then(data => {
-				response_data.payment_id = data.id;
-				res.json({status: "Success",data: response_data,  message: "Payment has successfully been registered"});
+				req.payment_id = data.id;
+				req.price = price;
+				req.checkout_url = api_response.links[1].href;
+				next()
+				// res.json({status: "Success",data: response_data,  message: "Payment has successfully been registered"});
 			})
 			.catch(err => {
 				res.status(500).json({status: "Failed", message: err.message || "Failed to register the payment"})
@@ -195,17 +187,7 @@ const refundPaypalPayment = (req, res) => {
 }
 
 const getCheckoutURL = (req, res) => {
-    // Check if data is complete
-	payment_id = req.params.payment_id
-	if (!payment_id) {
-        res.status(400).send({
-            status: "Failed",
-            message: "Missing payment_id"
-        });
-        return;
-    }
-
-	Payment.findOne({where: {user_id: req.user.id , id: payment_id}})
+	Payment.findOne({where: {user_id: req.user.id , id: req.payment_id}})
 	.then(data => {
 		paypal_payment_id = data.paypal_payment_id;
 		res.json({status: "Success",data: "https://www.sandbox.paypal.com/checkoutnow?token=" + paypal_payment_id,  message: "Paypal Checkout URL has successfully been retrieved"});

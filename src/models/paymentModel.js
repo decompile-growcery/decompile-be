@@ -10,12 +10,6 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      order_id: {
-        type: Sequelize.INTEGER,
-		// TODO: Change these once the Order model is already implemented
-        allowNull: true, 
-		unique: false,
-      },
       paypal_payment_id: {
         type: Sequelize.STRING,
         allowNull: false,

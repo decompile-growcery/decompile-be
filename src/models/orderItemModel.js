@@ -14,6 +14,18 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      note: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      amount: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      price: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+      },
     },
     {
       freezeTableName: true,

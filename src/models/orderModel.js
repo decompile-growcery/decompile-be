@@ -10,15 +10,24 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      payment_id: {
-        type: Sequelize.INTEGER,
-      },
       address_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
       status_id: {
         type: Sequelize.INTEGER,
+        default: 1
+      },
+      payment_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      total_price: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+      },
+      is_delivery: {
+        type: Sequelize.BOOLEAN,
         default: 1
       }
     },
