@@ -7,5 +7,6 @@ router.post("/order", verifyAuth.verifyToken, payment.createPayment, order.inser
     order.insertOrderItem);
 router.get("/order", verifyAuth.verifyToken, order.getOrdersByUser);
 router.put("/order-status", verifyAuth.verifyToken, order.updateOrderStatus);
+router.put("/order/payment-received", verifyAuth.verifyToken, order.updateStatusConfirmed);
 
 module.exports = router;

@@ -83,6 +83,28 @@ const getOrdersByUser = async (req, res) => {
     }
 }
 
+const updateStatusConfirmed = (req, res) => {
+    Order.update({
+        status_id: 2
+    }, {
+        where: {
+            id: req.body.order_id
+        }
+    })
+    .then(data => {
+        res.send({
+            status: "Success",
+            message: "Order status updated"
+        })
+    })
+    .catch(error => {
+        res.status(500).send({
+            status: "Failed",
+            message: error.message || "Create order failed"
+        })
+    })
+}
+
 const updateOrderStatus = (req, res) => {
     Order.update({
         status_id: req.body.status_id
@@ -109,5 +131,6 @@ module.exports = {
     insertOrder,
     insertOrderItem,
     getOrdersByUser,
-    updateOrderStatus
+    updateOrderStatus,
+    updateStatusConfirmed
 }
