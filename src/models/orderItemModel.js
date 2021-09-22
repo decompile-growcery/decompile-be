@@ -26,6 +26,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.FLOAT,
         allowNull: false,
       },
+      weight: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+      }
     },
     {
       freezeTableName: true,

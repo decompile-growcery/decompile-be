@@ -1,25 +1,25 @@
 module.exports = (sequelize, Sequelize) => {
     const CartItem = sequelize.define("cart_item", {
-      id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true
+        id: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+          autoIncrement: true
+        },
+        user_id: {
+          type: Sequelize.INTEGER,
+          allowNull: false
+        },
+        product_id: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+        },
+        quantity: {
+          type: Sequelize.INTEGER,
+          defaultValue: 0,
+          allowNull: false
+        }
       },
-      user_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-      },
-      product_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      quantity: {
-        type: Sequelize.INTEGER,
-		defaultValue: 0,
-        allowNull: false
-      }
-    },
       {
         freezeTableName: true,
         timestamps: false
