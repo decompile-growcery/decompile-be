@@ -3,11 +3,8 @@ const axios = require('axios');
 const Payment = db.payment;
 
 const createPayment = (req, res, next) => {
-	// TODO: Load the data from Order Models
 	currency_code = "AUD";
 	price = req.body.total_price;
-
-	// Make Paypal Order
 	let paypal_api_url = 'https://api-m.sandbox.paypal.com/v2/checkout/orders';
 
 	let post_data = {
@@ -19,7 +16,6 @@ const createPayment = (req, res, next) => {
             }
 		}]
 	};
-
 	let auth = {auth: {
 					username: process.env.PAYPAL_CLIENT_ID,
 					password: process.env.PAYPAL_SECRET
@@ -29,12 +25,10 @@ const createPayment = (req, res, next) => {
 	axios.post(paypal_api_url,post_data,auth )
 	.then((api_res) => {
 		api_response = api_res.data;
-		// Get Paypal Order ID
 		payment_status = api_response.status
 		paypal_payment_id = api_response.id
 
 		response_data = {payment_status: payment_status, checkout_url: api_response.links[1].href}
-		console.log(response_data)
 		const payment_data = {
 			user_id: req.user.id,
 			paypal_payment_id: paypal_payment_id,
@@ -46,7 +40,6 @@ const createPayment = (req, res, next) => {
 				req.price = price;
 				req.checkout_url = api_response.links[1].href;
 				next()
-				// res.json({status: "Success",data: response_data,  message: "Payment has successfully been registered"});
 			})
 			.catch(err => {
 				res.status(500).json({status: "Failed", message: err.message || "Failed to register the payment"})
@@ -54,6 +47,7 @@ const createPayment = (req, res, next) => {
 	})
 	.catch((err) => {
 		res.status(500).json({status: "Failed", message: "Failed to register the payment"})
+		return;
 	})
 }
 
