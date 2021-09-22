@@ -4,7 +4,7 @@ const payment = require('../controllers/paymentController');
 const removeFromCart = require('../middlewares/removeFromCartAfterOrder');
 var router = require("express").Router();
 
-router.post("/create-order", verifyAuth.verifyToken, payment.createPayment, 
+router.post("/order", verifyAuth.verifyToken, payment.createPayment, 
 order.insertOrder, order.insertOrderItem, removeFromCart.removeProductFromCart,);
 router.get("/order", verifyAuth.verifyToken, order.getOrdersByUser);
 router.put("/order-status", verifyAuth.verifyToken, order.updateOrderStatus);
