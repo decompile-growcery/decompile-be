@@ -4,7 +4,7 @@ const User = db.users;
 const getUserById = (req, res) => {
     User.findByPk(req.user.id, {
         attributes: {
-            exclude: ["password"]
+            exclude: ["password", "googleId"]
         }
     })
     .then(data => 
