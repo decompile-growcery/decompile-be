@@ -5,10 +5,10 @@ const sequelize = db.sequelize;
 const getAddressByUserId = async (req, res) => {
     try {
         var query = `SELECT a.city, a.state, a.postal_code, a.street_address
-        FROM address as A, users as U
+        FROM address as a, users as u
         WHERE a.user_id = u.id AND u.user_id = u.id`
         var data = await sequelize.query(query, {
-            replacements: [req.query.user_id]
+            replacements: [req.user.id]
         })
         res.send({
             status: "Success",
