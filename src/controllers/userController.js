@@ -2,7 +2,7 @@ const db = require("../models");
 const User = db.users;
 
 const getUserById = (req, res) => {
-    User.findByPk(req.query.user_id, {
+    User.findByPk(req.user.id, {
         attributes: {
             exclude: ["password"]
         }
