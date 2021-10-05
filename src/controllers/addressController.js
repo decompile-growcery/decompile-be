@@ -6,7 +6,7 @@ const getAddressByUserId = async (req, res) => {
     try {
         var query = `SELECT a.city, a.state, a.postal_code, a.street_address
         FROM address as a, users as u
-        WHERE a.user_id = u.id AND u.user_id = u.id`
+        WHERE a.user_id = u.id AND u.id = ?`
         var data = await sequelize.query(query, {
             replacements: [req.user.id]
         })
