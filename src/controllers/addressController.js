@@ -2,13 +2,13 @@ const db = require("../models");
 const Address = db.address;
 const sequelize = db.sequelize;
 
-const getAddressByFarmId = async (req, res) => {
+const getAddressByUserId = async (req, res) => {
     try {
         var query = `SELECT a.city, a.state, a.postal_code, a.street_address
-        FROM address as A, users as U, farm as F
-        WHERE a.user_id = u.id AND f.user_id = u.id AND f.id = ?`
+        FROM address as A, users as U
+        WHERE a.user_id = u.id AND u.user_id = u.id`
         var data = await sequelize.query(query, {
-            replacements: [req.query.farm_id]
+            replacements: [req.query.user_id]
         })
         res.send({
             status: "Success",
@@ -92,7 +92,7 @@ const deleteAddress = (req, res) => {
 }
 
 module.exports = {
-    getAddressByFarmId,
+    getAddressByUserId,
     insertToAddress,
     updateToAddress,
     deleteAddress
