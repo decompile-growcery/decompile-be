@@ -9,10 +9,10 @@ const insertOrder = (req, res, next) => {
     var order = {
         user_id: req.user.id,
         address_id: req.body.address_id,
-        product_price: req.body.total_price,
+        product_price: req.body.product_price,
         is_delivery: req.body.is_delivery,
         payment_id: req.payment_id,
-        status_id: req.body.status_id,
+        status_id: 1,
         shipping_cost: req.body.shipping_cost,
         total_weight: req.body.total_weight
     }
