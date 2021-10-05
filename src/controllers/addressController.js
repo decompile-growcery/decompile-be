@@ -5,7 +5,7 @@ const sequelize = db.sequelize;
 const getAddressByFarmId = async (req, res) => {
     try {
         var query = `SELECT a.city, a.state, a.postal_code, a.street_address
-        FROM address A, users U, farm F
+        FROM address as A, users as U, farm as F
         WHERE a.user_id = u.id AND f.user_id = u.id AND f.id = ?`
         var data = await sequelize.query(query, {
             replacements: [req.query.farm_id]
