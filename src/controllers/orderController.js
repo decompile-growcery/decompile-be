@@ -9,7 +9,7 @@ const insertOrder = (req, res, next) => {
     var order = {
         user_id: req.user.id,
         address_id: req.body.address_id,
-        product_price: req.body.product_price,
+        total_price: req.body.total_price,
         is_delivery: req.body.is_delivery,
         payment_id: req.payment_id,
         status_id: 1,
@@ -131,10 +131,43 @@ const updateOrderStatus = (req, res) => {
     })
 }
 
+const getOrdersByFarmer = async (req, res) => {
+    try {
+        var query2 = `SELECT o.id as order_id, o.user_id, o.payment_id, o.address_id, o.payment_id,
+        a.city, a.state, a.postal_code, a.street_address, s.status, o.total_price, o.total_weight, o.shipping_cost, o.is_delivery,
+        oi.id as order_item_id, oi.product_id, p.id as product_id, p.product_name, p.product_desc, p.product_price, 
+        p.unit_weight, p.unit_name, p.is_fresh, p.discount, pi.id as image_id, pi.image, 
+        u.id as user_id, u.first_name, u.last_name
+        FROM orders o
+        JOIN order_status s ON s.id = o.status_id
+        JOIN order_item oi ON o.id = oi.order_id
+        JOIN product p ON oi.product_id = p.id
+        JOIN users u ON u.id = o.user_id
+        JOIN farm f ON f.user_id = u.id
+        JOIN address a ON a.id = o.address_id
+        JOIN product_image pi ON pi.product_id = p.id
+        WHERE f.user_id = ${req.user.id}`
+
+        var orderItems = await sequelize.query(query2,
+            { type: QueryTypes.SELECT });
+
+        res.send({
+            message: "Success",
+            data: orderItems
+        })
+    } catch (error) {
+        res.status(500).send({
+            status: "Failed",
+            message: error.message || "Get orders by farmer"
+        })
+    }
+}
+
 module.exports = {
     insertOrder,
     insertOrderItem,
     getOrdersByUser,
     updateOrderStatus,
-    updateStatusConfirmed
+    updateStatusConfirmed,
+    getOrdersByFarmer
 }
