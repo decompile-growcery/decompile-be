@@ -133,7 +133,7 @@ const updateOrderStatus = (req, res) => {
 
 const getOrdersByFarmer = async (req, res) => {
     try {
-        var query2 = `SELECT o.id as order_id, o.address_id, s.status, o.total_price, o.total_weight, o.shipping_cost, o.is_delivery,
+        var query2 = `SELECT o.id as order_id, o.address_id, o.status_id, s.status, o.total_price, o.total_weight, o.shipping_cost, o.is_delivery,
         oi.id as order_item_id, oi.product_id, oi.amount, oi.note, oi.weight, oi.price, 
         p.id as product_id, p.product_name, p.unit_weight, p.unit_name, pi.image, 
         u.id as user_id, u.first_name, u.last_name, a.city, a.state, a.postal_code, a.street_address
