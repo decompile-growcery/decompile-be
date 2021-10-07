@@ -16,7 +16,7 @@ const removeProductFromCart = (req, res) => {
                 .catch(err => {
                     res.status(500).send({
                         status: "Success",
-                        message: "Failed to remove product"
+                        message: err.message || "Failed to remove product"
                       });
                 })
             }else{
@@ -31,26 +31,26 @@ const removeProductFromCart = (req, res) => {
                       });
                   }})
                 .catch(err => {
-                    console.trace(err.message);
                     res.status(500).send({
                         message: "Error occurred while removing product from cart"
                     });
                 })
             }
+            if (i === products.length-1) {
+                res.send({
+                    status: "Success",
+                    message: "Order created, waiting for payment",
+                    checkout_url: req.checkout_url
+                })
+            }
         }).catch(err => {
+            console.trace("Product not found in cart");
+            console.log(err.message);
             res.send({
                 status: "Failed",
                 message: "Product is not found in Cart"
               });
         });
-
-        if (i === products.length-1) {
-            res.send({
-                status: "Success",
-                message: "Order created, waiting for payment",
-                checkout_url: req.checkout_url
-            })
-        }
     }
 }
 
