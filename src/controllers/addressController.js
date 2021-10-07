@@ -4,7 +4,7 @@ const sequelize = db.sequelize;
 
 const getAddressByUserId = async (req, res) => {
     try {
-        var query = `SELECT a.city, a.state, a.postal_code, a.street_address
+        var query = `SELECT a.id, a.city, a.state, a.postal_code, a.street_address
         FROM address as a, users as u
         WHERE a.user_id = u.id AND u.id = ?`
         var data = await sequelize.query(query, {
