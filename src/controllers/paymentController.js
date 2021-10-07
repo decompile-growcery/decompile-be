@@ -46,7 +46,7 @@ const createPayment = (req, res, next) => {
 		});		
 	})
 	.catch((err) => {
-		res.status(500).json({status: "Failed", message: "Failed to register the payment"})
+		res.status(500).json({status: "Failed", message: err.message || "Failed to register the payment"})
 		return;
 	})
 }
