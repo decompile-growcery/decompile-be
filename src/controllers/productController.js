@@ -93,14 +93,14 @@ const seeProducts = async (req, res) => {
         from product p, farm f, product_image pi
         where p.farm_id = f.id and pi.product_id = p.id
         and p.category_id = ${req.query.category_id}`
-      } else if (req.query.farm_id) {
+      } else if (req.body.user_id) {
         query = `select p.id as product_id, f.id as farm_id, f.farm_name, f.farm_address,
         p.product_name, p.product_desc, p.product_price, p.unit_weight, p.unit_name,
         p.stock, p.is_fresh, p.discount,
         pi.id as image_id, pi.image
-        from product p, farm f, product_image pi
-        where p.farm_id = f.id and pi.product_id = p.id 
-        and f.id = ${req.query.farm_id}`
+        from product p, farm f, product_image pi, users u
+        where p.farm_id = f.id and pi.product_id = p.id and u.id = f.user_id
+        and f.id = ${req.body.user_id}`
       } else {
         query = `select p.id as product_id, f.id as farm_id, f.farm_name, f.farm_address,
         p.product_name, p.product_desc, p.product_price, p.unit_weight, p.unit_name,

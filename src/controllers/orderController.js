@@ -142,7 +142,7 @@ const getOrdersByFarmer = async (req, res) => {
         JOIN order_item oi ON o.id = oi.order_id
         JOIN product p ON oi.product_id = p.id
         JOIN users u ON u.id = o.user_id
-        JOIN farm f ON f.user_id = u.id
+        JOIN farm f ON f.id = p.farm_id
         JOIN address a ON a.id = o.address_id
         JOIN product_image pi ON pi.product_id = p.id
         WHERE f.user_id = ${req.user.id}`
