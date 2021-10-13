@@ -32,14 +32,7 @@ const updateUser = (req, res, next) => {
         }
     })
     .then(data => {
-        if (data == 1) {
-            next()
-        } else {
-            res.status(500).send({
-                status: "Failed",
-                message: "Failed to update user"
-            })
-        }
+        next()
     })
     .catch(error => 
         res.status(500).send({
