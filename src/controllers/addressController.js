@@ -54,7 +54,7 @@ const updateToAddress = (req, res) => {
         street_address: req.body.street_address
     }, {
         where: {
-            id: req.body.id
+            id: req.body.address_id
         }
     })
     .then(data => {
