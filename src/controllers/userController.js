@@ -20,7 +20,7 @@ const getUserById = (req, res) => {
     )
 }
 
-const updateUser = (req, res) => {
+const updateUser = (req, res, next) => {
     const user = {
         first_name: req.body.first_name.trim(),
         last_name: req.body.last_name.trim(),
@@ -28,7 +28,7 @@ const updateUser = (req, res) => {
 
     User.update(user, {
         where: {
-            id: req.body.user_id
+            id: req.user.id
         }
     })
     .then(data => {
@@ -37,7 +37,7 @@ const updateUser = (req, res) => {
         } else {
             res.status(500).send({
                 status: "Failed",
-                message: error.message || "Failed to update user"
+                message: "Failed to update user"
             })
         }
     })
