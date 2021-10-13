@@ -33,10 +33,7 @@ const updateUser = (req, res) => {
     })
     .then(data => {
         if (data == 1) {
-            res.send({
-                status: "Success",
-                message: "User update successful"
-            })
+            next()
         } else {
             res.status(500).send({
                 status: "Failed",

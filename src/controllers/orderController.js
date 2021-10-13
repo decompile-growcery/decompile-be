@@ -146,7 +146,6 @@ const getOrdersByFarmer = async (req, res) => {
         JOIN address a ON a.id = o.address_id
         JOIN product_image pi ON pi.product_id = p.id
         WHERE f.user_id = ${req.user.id}`
-
         var orderItems = await sequelize.query(query2,
             { type: QueryTypes.SELECT });
 
