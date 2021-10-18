@@ -44,7 +44,7 @@ const updateUser = (req, res, next) => {
 
 const getUserAndAddress = async (req, res) => {
     try {
-        var query = `SELECT u.id as "user_id", u.username, u.email, u.first_name, u.last_name, u.phone_number,
+        var query = `SELECT u.id as "user_id", u.username, u.email, u.first_name, u.last_name, 
         a.id as "address_id", a.city, a.state, a.postal_code, a.street_address
         FROM address as a, users as u
         WHERE a.user_id = u.id AND u.id = ?`
