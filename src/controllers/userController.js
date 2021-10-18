@@ -1,5 +1,6 @@
 const db = require("../models");
 const User = db.users;
+const sequelize = db.sequelize;
 
 const getUserById = (req, res) => {
     User.findByPk(req.user.id, {
@@ -41,7 +42,30 @@ const updateUser = (req, res, next) => {
     }))
 }
 
+const getUserAndAddress = (req, res) => {
+    try {
+        var query = `SELECT u.id as "user_id", u.username, u.email, u.first_name, u.last_name, u.phone_number,
+        a.id as "address_id", a.city, a.state, a.postal_code, a.street_address
+        FROM address as a, users as u
+        WHERE a.user_id = u.id AND u.id = ?`
+        var data = await sequelize.query(query, {
+            replacements: [req.user.id]
+        })
+        res.send({
+            status: "Success",
+            message: "Successful",
+            data: data[0]
+        })
+    } catch (error) {
+            res.status(500).send({
+                status: "Failed",
+                message: error.message || "Failed to fetch user"
+        })
+    }
+}
+
 module.exports = {
     getUserById,
-    updateUser
+    updateUser,
+    getUserAndAddress
 }
