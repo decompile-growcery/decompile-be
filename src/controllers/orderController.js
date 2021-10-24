@@ -5,7 +5,6 @@ const OrderItem = db.order_item;
 const { QueryTypes } = require('sequelize');
 
 const insertOrder = (req, res, next) => {
-    console.log(req.payment_id)
     var order = {
         user_id: req.user.id,
         address_id: req.body.address_id,
@@ -18,13 +17,11 @@ const insertOrder = (req, res, next) => {
     }
     Order.create(order)
     .then(data => {
-        // console.log(data)
         req.order = data;
         req.product = req.body.product;
         next()
     })
     .catch(error => {
-        console.log(error.message)
         res.status(500).send({
             status: "Failed",
             message: error.message || "Create order failed"
@@ -44,7 +41,6 @@ const insertOrderItem = (req, res, next) => {
             price: productList[i].price,
             weight: productList[i].weight,
         }).catch(error => {
-            console.log("error insert oi")
             res.status(500).send({
                 status: "Failed",
                 message: error.message || "Insert order item failed"

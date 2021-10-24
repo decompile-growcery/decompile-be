@@ -6,7 +6,6 @@ const getShippingCost = (req, res, next) => {
 		return;
 	}
 
-	// Unit Conversion
 	unit_name = req.body.unit_name.toLowerCase();
 	unit_weight = req.body.unit_weight;
 	if (unit_name == "kg"){
@@ -14,8 +13,6 @@ const getShippingCost = (req, res, next) => {
 		unit_weight *= 1000;
 	}
 
-	//TODO: Convert this code to models	
-	//TODO: What if the weight exceeds the max weight?
 	// Data Source: https://auspost.com.au/flat-rate-sending
 	req.shipping_cost = {price: {express : 25.95, parcel : 18.95}, 
 						currency: "AUD",
@@ -37,7 +34,6 @@ const getShippingCost = (req, res, next) => {
 	next();
 }
 
-// TODO: Do we need this? This function is just for showing the price data
 const showShippingCost = (req, res) => {
 	res.json(req.shipping_cost);
 }

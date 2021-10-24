@@ -1,3 +1,4 @@
+// Model for Farm
 module.exports = (sequelize, Sequelize) => {
     const Farm = sequelize.define("farm", {
       id: {

@@ -52,7 +52,6 @@ const createPayment = (req, res, next) => {
 }
 
 const getPaymentData = (req, res) => {
-    // Check if data is complete
 	payment_id = req.params.payment_id
 	if (!payment_id) {
         res.status(400).send({
@@ -65,7 +64,6 @@ const getPaymentData = (req, res) => {
 	Payment.findOne({where: {user_id: req.user.id , id: payment_id}})
 	.then(data => {
 		paypal_payment_id = data.paypal_payment_id;
-		// Retrieve Data from Paypal
 		let paypal_api_url = 'https://api.sandbox.paypal.com/v2/checkout/orders/' + paypal_payment_id;
 
 		let auth = {auth: {
@@ -77,8 +75,6 @@ const getPaymentData = (req, res) => {
 		axios.get(paypal_api_url,auth )
 		.then((api_res) => {
 			api_response = api_res.data;
-			// It does not need to be deleted, 
-			// but I delete it anyway to shorten the API response
 			delete api_response.links;
 			res.json({status: "Success",data: api_response,  message: "Payment data has successfully been retrieved"});	
 		})
@@ -92,7 +88,6 @@ const getPaymentData = (req, res) => {
 }
 
 const capturePaypalPayment = (req, res) => {
-    // Check if data is complete
 	payment_id = req.params.payment_id
 	if (!payment_id) {
         res.status(400).send({
@@ -105,7 +100,6 @@ const capturePaypalPayment = (req, res) => {
 	Payment.findOne({where: {user_id: req.user.id , id: payment_id}})
 	.then(data =>{
 		paypal_payment_id = data.paypal_payment_id;
-		// Capture Paypal Checkout Order
 		let paypal_api_url = 'https://api.sandbox.paypal.com/v2/checkout/orders/' + paypal_payment_id + '/capture';
 
 		let auth = {auth: {
@@ -135,10 +129,6 @@ const capturePaypalPayment = (req, res) => {
 }
 
 const refundPaypalPayment = (req, res) => {
-	// FIXME: Does it work? 
-	// Sometimes it works (in the past), but sometimes it does not work \(._.")/
-
-    // Check if data is complete
 	payment_id = req.params.payment_id;
 	if (!payment_id) {
         res.status(400).send({

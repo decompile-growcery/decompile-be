@@ -3,7 +3,6 @@ const sequelize = db.sequelize;
 const CartItem = db.cart_item;
 
 const addCartItem = (req, res) => {
-    // Check if data is complete
 	product_id = req.body.product_id;
     if (!product_id) {
         res.status(400).send({
@@ -25,7 +24,6 @@ const addCartItem = (req, res) => {
 			}
 		})
         .then(data => {
-			// Item is found
 			if (!data[1]){
 				CartItem.increment('quantity', { by: 1, where: { id: data[0].id }})
 				.then(data => {
@@ -59,7 +57,6 @@ const addCartItem = (req, res) => {
 }
 
 const deleteCartItem = (req, res) => {
-    // Check if data is complete
 	product_id = req.body.product_id
     if (!product_id) {
         res.status(400).send({
@@ -68,7 +65,7 @@ const deleteCartItem = (req, res) => {
         });
         return;
     }
-	// Delete the product from cart
+
 	CartItem.destroy({
 		where: { product_id: product_id }
 	})
@@ -94,7 +91,6 @@ const deleteCartItem = (req, res) => {
 }
 
 const removeCartItem = (req, res) => {
-    // Check if data is complete
 	product_id = req.body.product_id
     if (!product_id) {
         res.status(400).send({
@@ -105,10 +101,7 @@ const removeCartItem = (req, res) => {
     }
 	CartItem.findOne({where: {product_id: product_id}})
 	.then(data => {
-		/* If quantity <= 1, then delete the item from cart
-		else just decrease the quantity */
 		if (data.quantity > 1){
-			// Decrease the quantity
 			CartItem.decrement('quantity', { by: 1, where: { id: data.id }})
 			.then(data => {
 				res.send({
@@ -123,7 +116,6 @@ const removeCartItem = (req, res) => {
 				  });
 			})
 		}else{
-			// Delete the product from cart
 			CartItem.destroy({
 				where: { product_id: product_id }
 			  })
@@ -155,8 +147,6 @@ const removeCartItem = (req, res) => {
 	});
 }
 
-// TODO: Maybe change this implementation using include. 
-// I tried using Include, but it searches for products instead of product :(
 const getCartItems = async (req, res) => {
 	query = `select product.* , product_image.* , cart_item.*
 			from product, product_image, cart_item

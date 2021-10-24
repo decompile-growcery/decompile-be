@@ -4,7 +4,6 @@ const User = db.users;
 const jwt = require('jsonwebtoken');
 
 const createUser = (req, res, next) => {
-	// Check if data is complete
     if (!req.body.username || !req.body.password || !req.body.email || !req.body.first_name || !req.body.last_name) {
         res.status(400).send({
             status: "Failed",
@@ -12,7 +11,6 @@ const createUser = (req, res, next) => {
         });
         return;
     }
-	// TODO: Validate Username
 
 	salt = crypto.randomBytes(16).toString('hex');
 	password_hash =  crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex');

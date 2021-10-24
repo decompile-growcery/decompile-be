@@ -12,7 +12,7 @@ const db = {}
 db.Sequelize = Sequelize
 db.sequelize = sequelize
 
-// DBs
+// Obtain Models
 db.cart_item = require("./cartItemModel.js")(sequelize, Sequelize);
 db.users = require("./userModel.js")(sequelize, Sequelize);
 db.category = require("./categoryModel.js")(sequelize, Sequelize);
@@ -25,8 +25,6 @@ db.order_item = require("./orderItemModel.js")(sequelize, Sequelize);
 db.payment = require("./paymentModel.js")(sequelize, Sequelize);
 
 // Foreign Keys
-// FIXME: Check product foreign key validation for cartitem
-// TODO: Add foreign key from payment to order_id once the order model is already implemented
 db.product.hasMany(db.product_image, {foreignKey: 'product_id'})
 db.category.hasMany(db.product, {foreignKey: 'category_id'})
 db.users.hasOne(db.farm, {foreignKey: 'user_id'})

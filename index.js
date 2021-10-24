@@ -12,7 +12,7 @@ require('./src/config/passport')(passport)
 app.set('trust proxy', 'loopback');
 
 // PORT CONFIG
-// Must match up with /etc/nginx/frameworks-available/nodejs.conf!
+// Must match up with /etc/nginx/frameworks-available/nodejs.conf
 const port = process.argv.slice(2)[0] || process.env.PORT || 8081;
 
 // BASE URL CONFIG
@@ -55,7 +55,7 @@ app.use('/growcery', router);
 // DATABASE
 const db = require("./src/models");
 
-// FIXME: Sync Database only in production environment
+// Sync Database only in production environment
 // db.sequelize.sync();
 
 app.listen(port, () => {

@@ -14,7 +14,6 @@ module.exports = function (passport) {
         callbackURL: '/growcery/auth/google/callback',
       },
       async (accessToken, refreshToken, profile, done) => {
-        //get the user data from google 
         var name = "user" + Math.random().toString(36).substring(2,15) 
         const newUser = {
           googleId: profile.id,
@@ -26,12 +25,9 @@ module.exports = function (passport) {
 
         try {
         var user = await User.findOne({where: {googleId: profile.id}})
-
           if (user) {
-            //If user present in our database.
             done(null, user)
           } else {
-            // if user is not preset in our database save user data to database.
             user = await User.create(newUser)
             const farmName = newUser.username + `'s farm`
             const farmData = {
@@ -49,12 +45,10 @@ module.exports = function (passport) {
     )
   )
 
-  // used to serialize the user for the session
   passport.serializeUser((user, done) => {
     done(null, user.id)
   })
 
-  // used to deserialize the user
   passport.deserializeUser((id, done) => {
     User.findById(id, (err, user) => done(err, user))
   })

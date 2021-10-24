@@ -66,7 +66,7 @@ const updateToAddress = (req, res) => {
     .catch(error => {
         res.status(500).send({
             status: "Failed",
-            message: error.message || "Insert address failed"
+            message: error.message || "Update address failed"
         })
     })
 }

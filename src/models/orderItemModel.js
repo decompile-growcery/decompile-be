@@ -1,3 +1,4 @@
+// Model for Order Item
 module.exports = (sequelize, Sequelize) => {
     const OrderItem = sequelize.define("order_item", {
       id: {
