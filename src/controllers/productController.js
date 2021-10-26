@@ -130,7 +130,7 @@ const myProducts = async (req, res) => {
       pi.id as image_id, pi.image
       from product p, farm f, product_image pi, users u
       where p.farm_id = f.id and pi.product_id = p.id and u.id = f.user_id
-      and f.user_id = ${req.user.user_id}`
+      and f.user_id = ${req.user.id}`
 
   try {
     var [result, metadata] = await sequelize.query(query)
