@@ -35,14 +35,9 @@ npm install --prefix /var/www/nodejs
 Run the project
 - Using Nodemon (recommended)
 ```sh
-nohup nodemon index.js &
+nohup nodemon --exitcrash /var/www/nodejs/index.js </dev/null &
 ```
 - Using Node
 ```sh
-nohup nodemon --exitcrash /var/www/nodejs/index.js </dev/null &
+nohup node index.js &
 ```
-
-
-## Run in UQZone
-
-
