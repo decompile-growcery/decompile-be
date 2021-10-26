@@ -1,54 +1,12 @@
 const db = require("../models");
-const User = db.users;
+const Address = db.address;
 const sequelize = db.sequelize;
 
-const getUserById = (req, res) => {
-    User.findByPk(req.user.id, {
-        attributes: {
-            exclude: ["password", "googleId"]
-        }
-    })
-    .then(data => 
-        res.send({
-            status: "Success",
-            data: data
-        })
-    ).catch(error => 
-        res.status(500).send({
-            status: "Failed",
-            message: error.message || "Failed to fetch user"
-        })
-    )
-}
-
-const updateUser = (req, res, next) => {
-    const user = {
-        first_name: req.body.first_name.trim(),
-        last_name: req.body.last_name.trim(),
-    }
-
-    User.update(user, {
-        where: {
-            id: req.user.id
-        }
-    })
-    .then(data => {
-        next()
-    })
-    .catch(error => 
-        res.status(500).send({
-            status: "Failed",
-            message: error.message || "Failed to update user"
-    }))
-}
-
-const getUserAndAddress = async (req, res) => {
+const getAddressByUserId = async (req, res) => {
     try {
-        var query = `SELECT u.id as "user_id", u.username, u.email, u.first_name, u.last_name, 
-        a.id as "address_id", a.city, a.state, a.postal_code, a.street_address
-        FROM users as u
-        LEFT JOIN address a ON a.user_id = u.id
-        WHERE u.id = ?`
+        var query = `SELECT a.id, a.city, a.state, a.postal_code, a.street_address
+        FROM address as a, users as u
+        WHERE a.user_id = u.id AND u.id = ?`
         var data = await sequelize.query(query, {
             replacements: [req.user.id]
         })
@@ -58,15 +16,84 @@ const getUserAndAddress = async (req, res) => {
             data: data[0]
         })
     } catch (error) {
-            res.status(500).send({
-                status: "Failed",
-                message: error.message || "Failed to fetch user"
+        res.status(500).send({
+            status: "Failed",
+            message: error.message || "Get address failed"
         })
     }
 }
 
+const insertToAddress = (req, res) => {
+    Address.create({
+        user_id: req.user.id,
+        city: req.body.city,
+        state: req.body.state,
+        postal_code: req.body.postal_code,
+        street_address: req.body.street_address
+    })
+    .then(data => {
+        res.send({
+            status: "Success",
+            message: "Successful"
+        })
+    })
+    .catch(error => {
+        res.status(500).send({
+            status: "Failed",
+            message: error.message || "Insert address failed"
+        })
+    })
+}
+
+const updateToAddress = (req, res) => {
+    Address.update({
+        user_id: req.user.id,
+        city: req.body.city,
+        state: req.body.state,
+        postal_code: req.body.postal_code,
+        street_address: req.body.street_address
+    }, {
+        where: {
+            id: req.body.address_id
+        }
+    })
+    .then(data => {
+        res.send({
+            status: "Success",
+            message: "Successful"
+        })
+    })
+    .catch(error => {
+        res.status(500).send({
+            status: "Failed",
+            message: error.message || "Update address failed"
+        })
+    })
+}
+
+const deleteAddress = (req, res) => {
+    Address.destroy({
+        where: {
+            id: req.query.id
+        }
+    })
+    .then(data => {
+        res.send({
+            status: "Success",
+            message: "Successful"
+        })
+    })
+    .catch(error => {
+        res.status(500).send({
+            status: "Failed",
+            message: error.message || "Insert address failed"
+        })
+    })
+}
+
 module.exports = {
-    getUserById,
-    updateUser,
-    getUserAndAddress
+    getAddressByUserId,
+    insertToAddress,
+    updateToAddress,
+    deleteAddress
 }
