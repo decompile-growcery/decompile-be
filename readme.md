@@ -22,5 +22,27 @@ node index.js
 ```
 
 ## Run in UQZone
+Change directory to /var/www/nodejs
+```sh
+cd /var/www/nodejs
+```
+
+Install dependencies
+```sh
+npm install --prefix /var/www/nodejs
+```
+
+Run the project
+- Using Nodemon (recommended)
+```sh
+nohup nodemon index.js &
+```
+- Using Node
+```sh
+nohup nodemon --exitcrash /var/www/nodejs/index.js </dev/null &
+```
+
+
+## Run in UQZone
 
 
